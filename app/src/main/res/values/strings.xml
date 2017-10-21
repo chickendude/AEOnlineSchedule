@@ -1,0 +1,8 @@
+<resources>
+	<string name="app_name">AEOnlineSchedule</string>
+	<string name="schedule">Schedule</string>
+	<string name="invoice">Invoice</string>
+	<string name="students_name">Student\'s Name</string>
+	<string name="class_date">Class Date:</string>
+	<string name="click_to_set">(click to set)</string>
+</resources>

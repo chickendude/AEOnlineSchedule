@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:paddingLeft="8dp"
+	android:paddingRight="8dp"
+	android:paddingTop="8dp">
+
+	<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_gravity="center"
+					android:orientation="vertical">
+
+		<EditText
+			android:id="@+id/studentNameEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:layout_marginBottom="8dp"
+			android:hint="@string/students_name"
+			android:textAlignment="center"
+			android:textSize="24sp"/>
+
+		<TextView
+			android:id="@+id/classDateLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/studentNameEdit"
+			android:layout_marginBottom="8dp"
+			android:text="@string/class_date"
+			android:textSize="24sp"/>
+
+		<TextView
+			android:id="@+id/classDateValue"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/studentNameEdit"
+			android:layout_toRightOf="@id/classDateLabel"
+			android:text="@string/click_to_set"
+			android:textAlignment="textEnd"
+			android:textSize="24sp"/>
+
+
+		<TextView
+			android:id="@+id/classTimeLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/classDateLabel"
+			android:layout_marginBottom="8dp"
+			android:text="Time:"
+			android:textSize="24sp"/>
+
+		<TextView
+			android:id="@+id/classTimeValue"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentRight="true"
+			android:layout_below="@id/classDateLabel"
+			android:layout_toRightOf="@id/classTimeLabel"
+			android:text="@string/click_to_set"
+			android:textAlignment="textEnd"
+			android:textSize="24sp"/>
+
+		<EditText
+			android:id="@+id/notesEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/classTimeLabel"
+			android:layout_marginBottom="16dp"
+			android:gravity="top"
+			android:hint="Notes about class"
+			android:lines="2"
+			android:textSize="24sp"/>
+
+		<Button
+			android:id="@+id/createClassButton"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/notesEdit"
+			android:text="Create class"/>
+
+	</RelativeLayout>
+</ScrollView>
