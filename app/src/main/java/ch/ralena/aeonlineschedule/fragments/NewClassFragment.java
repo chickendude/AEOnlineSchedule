@@ -27,8 +27,8 @@ import io.realm.Realm;
 /**
  * Fragment for creating a new class.
  */
-
 public class NewClassFragment extends Fragment {
+	View rootView;
 	TextView classDateValue;
 	TextView classTimeValue;
 	Calendar calendar;
@@ -100,24 +100,28 @@ public class NewClassFragment extends Fragment {
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 
-		View view = inflater.inflate(R.layout.fragment_new_class, container, false);
+		rootView = inflater.inflate(R.layout.fragment_new_class, container, false);
 
-		EditText studentEdit = view.findViewById(R.id.studentNameEdit);
-		EditText notesEdit = view.findViewById(R.id.notesEdit);
 
-		// set up click listeners
-		TextView classDateLabel = view.findViewById(R.id.classDateLabel);
-		classDateLabel.setOnClickListener(classDateClickListener);
-		classDateValue = view.findViewById(R.id.classDateValue);
-		classDateValue.setOnClickListener(classDateClickListener);
-
-		TextView classTimeLabel = view.findViewById(R.id.classTimeLabel);
-		classTimeLabel.setOnClickListener(classTimeClickListener);
-		classTimeValue = view.findViewById(R.id.classTimeValue);
-		classTimeValue.setOnClickListener(classTimeClickListener);
+		// set up click listeners for date and time
+		setUpDateAndTime();
 
 		// submit button
-		Button button = view.findViewById(R.id.createClassButton);
+		setUpSubmitButton();
+
+		return rootView;
+	}
+
+	/**
+	 * Sets up onClickListener for the submit button and handles creating/saving the objects in the database.
+	 */
+	private void setUpSubmitButton() {
+		// edit texts for student name and notes
+		EditText studentEdit = rootView.findViewById(R.id.studentNameEdit);
+		EditText notesEdit = rootView.findViewById(R.id.notesEdit);
+
+		// find button and set up onclick listener
+		Button button = rootView.findViewById(R.id.createClassButton);
 		button.setOnClickListener(v -> {
 			// create class
 			realm.executeTransaction(realm -> {
@@ -132,7 +136,22 @@ public class NewClassFragment extends Fragment {
 				getActivity().onBackPressed();
 			});
 		});
+	}
 
-		return view;
+	/**
+	 * Sets up onClickListeners for both textviews of date and time.
+	 */
+	private void setUpDateAndTime() {
+		// date
+		TextView classDateLabel = rootView.findViewById(R.id.classDateLabel);
+		classDateLabel.setOnClickListener(classDateClickListener);
+		classDateValue = rootView.findViewById(R.id.classDateValue);
+		classDateValue.setOnClickListener(classDateClickListener);
+
+		// time
+		TextView classTimeLabel = rootView.findViewById(R.id.classTimeLabel);
+		classTimeLabel.setOnClickListener(classTimeClickListener);
+		classTimeValue = rootView.findViewById(R.id.classTimeValue);
+		classTimeValue.setOnClickListener(classTimeClickListener);
 	}
 }
