@@ -49,12 +49,7 @@ public class ScheduleFragment extends Fragment {
 
 		// load FAB
 		FloatingActionButton fab = view.findViewById(R.id.fab);
-		fab.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				addNewClass();
-			}
-		});
+		fab.setOnClickListener(v -> addNewClass());
 
 		// load recycler view
 		RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
