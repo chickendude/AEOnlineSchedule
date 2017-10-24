@@ -2,20 +2,20 @@ package ch.ralena.aeonlineschedule.objects;
 
 import java.util.Date;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * ScheduledClass object.
  */
-public class ScheduledClass {
+public class ScheduledClass extends RealmObject {
+	@PrimaryKey
+	private String id;
+
 	private Date date;
 	private String notes;
 	private String summary;
 	private Student student;
-
-	public ScheduledClass(Date date, String notes, Student student) {
-		this.date = date;
-		this.notes = notes;
-		this.student = student;
-	}
 
 	public Date getDate() {
 		return date;

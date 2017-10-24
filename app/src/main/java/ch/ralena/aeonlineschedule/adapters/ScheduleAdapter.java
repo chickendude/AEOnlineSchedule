@@ -53,6 +53,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 		public void bindView(ScheduledClass scheduledClass) {
 			String studentName = scheduledClass.getStudent().getName();
 			studentNameText.setText(studentName);
+			dateText.setText(scheduledClass.getDate().toString());
 		}
 	}
 }

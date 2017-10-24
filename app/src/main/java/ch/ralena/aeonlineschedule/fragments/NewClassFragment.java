@@ -8,16 +8,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.UUID;
 
 import ch.ralena.aeonlineschedule.R;
+import ch.ralena.aeonlineschedule.objects.ScheduledClass;
+import ch.ralena.aeonlineschedule.objects.Student;
+import io.realm.Realm;
 
 /**
  * Fragment for creating a new class.
@@ -27,6 +33,7 @@ public class NewClassFragment extends Fragment {
 	TextView classDateValue;
 	TextView classTimeValue;
 	Calendar calendar;
+	Realm realm;
 
 	View.OnClickListener classTimeClickListener = new View.OnClickListener() {
 		@Override
@@ -56,23 +63,21 @@ public class NewClassFragment extends Fragment {
 	View.OnClickListener classDateClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
-			DatePickerDialog.OnDateSetListener onDateSetListener = new DatePickerDialog.OnDateSetListener() {
-				@Override
-				public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-					// convert returned integer values into a calendar object to pass into the SimpleDateFormat object
-					calendar.set(year, month, dayOfMonth);
-					// Sat. Oct. 21, 2017
-					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E. MMM. d, yyyy", Locale.US);
-					// update text
-					classDateValue.setText(simpleDateFormat.format(calendar.getTime()));
-				}
+			DatePickerDialog.OnDateSetListener onDateSetListener = (datePicker, year, month, dayOfMonth) -> {
+				// convert returned integer values into a calendar object to pass into the SimpleDateFormat object
+				calendar.set(year, month, dayOfMonth);
+				// Sat. Oct. 21, 2017
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E. MMM. d, yyyy", Locale.US);
+				simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+				// update text
+				classDateValue.setText(simpleDateFormat.format(calendar.getTime()));
 			};
-			Calendar calendar = Calendar.getInstance();
+			Calendar c = Calendar.getInstance(TimeZone.getDefault());
 			DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
 					onDateSetListener,
-					calendar.get(Calendar.YEAR),
-					calendar.get(Calendar.MONTH),
-					calendar.get(Calendar.DAY_OF_MONTH));
+					c.get(Calendar.YEAR),
+					c.get(Calendar.MONTH),
+					c.get(Calendar.DAY_OF_MONTH));
 			datePickerDialog.show();
 		}
 	};
@@ -80,13 +85,22 @@ public class NewClassFragment extends Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		// set bar title
 		getActivity().setTitle("Add new Class");
+
+		realm = Realm.getDefaultInstance();
 
 		// make sure Calendar object is in CST.
 		TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
-		calendar = Calendar.getInstance(timeZone);
+		calendar = GregorianCalendar.getInstance(timeZone);
+		// clear out seconds and ms places
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 
 		View view = inflater.inflate(R.layout.fragment_new_class, container, false);
+
+		EditText studentEdit = view.findViewById(R.id.studentNameEdit);
+		EditText notesEdit = view.findViewById(R.id.notesEdit);
 
 		// set up click listeners
 		TextView classDateLabel = view.findViewById(R.id.classDateLabel);
@@ -98,6 +112,23 @@ public class NewClassFragment extends Fragment {
 		classTimeLabel.setOnClickListener(classTimeClickListener);
 		classTimeValue = view.findViewById(R.id.classTimeValue);
 		classTimeValue.setOnClickListener(classTimeClickListener);
+
+		// submit button
+		Button button = view.findViewById(R.id.createClassButton);
+		button.setOnClickListener(v -> {
+			// create class
+			realm.executeTransaction(realm -> {
+				// create student object
+				Student student = realm.createObject(Student.class, UUID.randomUUID().toString());
+				student.setName(studentEdit.getText().toString());
+				// create class object
+				ScheduledClass scheduledClass = realm.createObject(ScheduledClass.class, UUID.randomUUID().toString());
+				scheduledClass.setStudent(student);
+				scheduledClass.setDate(calendar.getTime());
+				scheduledClass.setNotes(notesEdit.getText().toString());
+				getActivity().onBackPressed();
+			});
+		});
 
 		return view;
 	}

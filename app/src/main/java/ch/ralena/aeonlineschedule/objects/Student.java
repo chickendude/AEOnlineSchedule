@@ -1,15 +1,17 @@
 package ch.ralena.aeonlineschedule.objects;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Student class.
  */
-public class Student {
+public class Student extends RealmObject {
+	@PrimaryKey
+	private String id;
+
 	private String name;
 	private String notes;
-
-	public Student(String name) {
-		this.name = name;
-	}
 
 	public String getName() {
 		return name;

@@ -10,14 +10,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.adapters.ScheduleAdapter;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
-import ch.ralena.aeonlineschedule.objects.Student;
+import io.realm.Realm;
 
 /**
  * Fragment that lists your schedule.
@@ -30,18 +28,18 @@ public class ScheduleFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 		// load data
-		scheduledClasses = new ArrayList<>();
+		Realm realm = Realm.getDefaultInstance();
+
+		scheduledClasses = realm.where(ScheduledClass.class).findAll();;
 
 		//////////////////////////////////////
-
-		Student student = new Student("Chris");
-		Student student2 = new Student("Christopher");
-		ScheduledClass scheduledClass = new ScheduledClass(new Date(), "", student);
-		ScheduledClass scheduledClass2 = new ScheduledClass(new Date(), "", student2);
-		scheduledClasses.add(scheduledClass);
-		scheduledClasses.add(scheduledClass2);
-		scheduledClasses.add(scheduledClass);
-
+//		Student student = new Student("Chris");
+//		Student student2 = new Student("Christopher");
+//		ScheduledClass scheduledClass = new ScheduledClass(new Date(), "", student);
+//		ScheduledClass scheduledClass2 = new ScheduledClass(new Date(), "", student2);
+//		scheduledClasses.add(scheduledClass);
+//		scheduledClasses.add(scheduledClass2);
+//		scheduledClasses.add(scheduledClass);
 		///////////////////////////////////////
 
 		// inflate layout
