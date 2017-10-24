@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,27 +34,27 @@ public class NewClassFragment extends Fragment {
 	Calendar calendar;
 	Realm realm;
 
+	/**
+	 * OnClickListener to brings up a time dialog when the view is clicked.
+	 */
 	View.OnClickListener classTimeClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
-			TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-				@Override
-				public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-					// if an erroneous time was chosen, just reset it to 0
-					if (minute != 0 && minute != 30) {
-						minute = 0;
-					}
-					calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-					calendar.set(Calendar.MINUTE, minute);
-					Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
-					calendarHere.setTime(calendar.getTime());
-
-					String classTime = String.format(Locale.ENGLISH, "%02d:%02d/%02d:%02d", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
-
-					classTimeValue.setText(classTime);
+			TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, hourOfDay, minute) -> {
+				// if an erroneous time was chosen, just reset it to 0
+				if (minute != 0 && minute != 30) {
+					minute = 0;
 				}
+				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+				calendar.set(Calendar.MINUTE, minute);
+				Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
+				calendarHere.setTime(calendar.getTime());
+
+				String classTime = String.format(Locale.ENGLISH, "%02d:%02d/%02d:%02d", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
+
+				classTimeValue.setText(classTime);
 			};
-			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, 0, 0, false);
+			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
 			timePickerDialog.show();
 		}
 	};
@@ -91,9 +90,10 @@ public class NewClassFragment extends Fragment {
 		realm = Realm.getDefaultInstance();
 
 		// make sure Calendar object is in CST.
-		TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
-		calendar = GregorianCalendar.getInstance(timeZone);
+		calendar = GregorianCalendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
 		// clear out seconds and ms places
+		calendar.set(Calendar.MINUTE, 0);
 		calendar.set(Calendar.SECOND, 0);
 		calendar.set(Calendar.MILLISECOND, 0);
 

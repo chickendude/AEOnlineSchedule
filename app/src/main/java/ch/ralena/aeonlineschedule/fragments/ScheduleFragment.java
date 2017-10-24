@@ -19,6 +19,7 @@ import io.realm.Realm;
 
 /**
  * Fragment that lists your schedule.
+ * You can also add new schedules by clicking the FAB button.
  */
 public class ScheduleFragment extends Fragment {
 	List<ScheduledClass> scheduledClasses;
@@ -31,16 +32,6 @@ public class ScheduleFragment extends Fragment {
 		Realm realm = Realm.getDefaultInstance();
 
 		scheduledClasses = realm.where(ScheduledClass.class).findAll();;
-
-		//////////////////////////////////////
-//		Student student = new Student("Chris");
-//		Student student2 = new Student("Christopher");
-//		ScheduledClass scheduledClass = new ScheduledClass(new Date(), "", student);
-//		ScheduledClass scheduledClass2 = new ScheduledClass(new Date(), "", student2);
-//		scheduledClasses.add(scheduledClass);
-//		scheduledClasses.add(scheduledClass2);
-//		scheduledClasses.add(scheduledClass);
-		///////////////////////////////////////
 
 		// inflate layout
 		View view = inflater.inflate(R.layout.fragment_schedule, container, false);
@@ -57,6 +48,9 @@ public class ScheduleFragment extends Fragment {
 		return view;
 	}
 
+	/**
+	 * Loads the add new class fragment.
+	 */
 	private void addNewClass() {
 		NewClassFragment fragment = new NewClassFragment();
 		getFragmentManager().beginTransaction()
