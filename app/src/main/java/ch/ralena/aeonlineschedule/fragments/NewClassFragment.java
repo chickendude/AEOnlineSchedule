@@ -43,7 +43,7 @@ public class NewClassFragment extends Fragment {
 					Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
 					calendarHere.setTime(calendar.getTime());
 
-					String classTime = String.format("%d:%d/%d:%d", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
+					String classTime = String.format(Locale.ENGLISH, "%02d:%02d/%02d:%02d", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
 
 					classTimeValue.setText(classTime);
 				}
