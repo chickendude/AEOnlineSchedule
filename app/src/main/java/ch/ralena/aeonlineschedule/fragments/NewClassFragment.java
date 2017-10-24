@@ -35,7 +35,7 @@ public class NewClassFragment extends Fragment {
 	Realm realm;
 
 	/**
-	 * OnClickListener to brings up a time dialog when the view is clicked.
+	 * OnClickListener to bring up a 24h time dialog when the view is clicked and update the view's text with the chose time.
 	 */
 	View.OnClickListener classTimeClickListener = new View.OnClickListener() {
 		@Override
@@ -50,7 +50,7 @@ public class NewClassFragment extends Fragment {
 				Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
 				calendarHere.setTime(calendar.getTime());
 
-				String classTime = String.format(Locale.ENGLISH, "%02d:%02d/%02d:%02d", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
+				String classTime = String.format(Locale.ENGLISH, "%02d:%02d CST\n%02d:%02d here", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
 
 				classTimeValue.setText(classTime);
 			};
@@ -59,6 +59,9 @@ public class NewClassFragment extends Fragment {
 		}
 	};
 
+	/**
+	 * OnClickListener to bring up a DatePicker dialog box when the view is clicked.
+	 */
 	View.OnClickListener classDateClickListener = new View.OnClickListener() {
 		@Override
 		public void onClick(View view) {
