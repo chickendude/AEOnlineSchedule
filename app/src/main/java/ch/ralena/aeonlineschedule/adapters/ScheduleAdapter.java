@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,6 +47,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 		private TextView dateText;
 		private TextView dayOfWeekText;
 		private TextView timeText;
+		private TextView hoursLeftText;
 		private TextView studentNameText;
 
 		public ScheduleViewHolder(View itemView) {
@@ -53,6 +55,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 			dateText = itemView.findViewById(R.id.dateText);
 			dayOfWeekText = itemView.findViewById(R.id.dayOfWeekText);
 			timeText = itemView.findViewById(R.id.timeText);
+			hoursLeftText = itemView.findViewById(R.id.hoursLeft);
 			studentNameText = itemView.findViewById(R.id.studentNameText);
 		}
 
@@ -65,9 +68,21 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 			String dayOfMonth = new SimpleDateFormat("d", Locale.ENGLISH).format(scheduledClass.getDate());
 			String time = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(scheduledClass.getDate());
 
+			// calculate the time left until class starts
+			Long timeDifference = scheduledClass.getDate().getTime() - new Date().getTime();
+			int minutes = (int) (timeDifference % 3600000) / 60000;
+			int hours = (int) (timeDifference / 3600000);
+			int days = 0;
+			if (hours >= 24) {
+				days = hours / 24;
+				hours = hours % 24;
+			}
+			String hoursLeft = days > 0 ? String.format(Locale.ENGLISH, "%dd %dh", days, hours) : String.format(Locale.ENGLISH, "%dh %d m", hours, minutes);
+
 			dayOfWeekText.setText(dayOfWeek);
 			dateText.setText(dayOfMonth);
 			timeText.setText(time);
+			hoursLeftText.setText(hoursLeft);
 		}
 	}
 }
