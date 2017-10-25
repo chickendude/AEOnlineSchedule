@@ -6,7 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
@@ -42,18 +44,30 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
 	class ScheduleViewHolder extends RecyclerView.ViewHolder {
 		private TextView dateText;
+		private TextView dayOfWeekText;
+		private TextView timeText;
 		private TextView studentNameText;
 
 		public ScheduleViewHolder(View itemView) {
 			super(itemView);
 			dateText = itemView.findViewById(R.id.dateText);
+			dayOfWeekText = itemView.findViewById(R.id.dayOfWeekText);
+			timeText = itemView.findViewById(R.id.timeText);
 			studentNameText = itemView.findViewById(R.id.studentNameText);
 		}
 
 		public void bindView(ScheduledClass scheduledClass) {
 			String studentName = scheduledClass.getStudent().getName();
 			studentNameText.setText(studentName);
-			dateText.setText(scheduledClass.getDate().toString());
+
+			// get strings from Date
+			String dayOfWeek = new SimpleDateFormat("E", Locale.ENGLISH).format(scheduledClass.getDate());
+			String dayOfMonth = new SimpleDateFormat("d", Locale.ENGLISH).format(scheduledClass.getDate());
+			String time = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(scheduledClass.getDate());
+
+			dayOfWeekText.setText(dayOfWeek);
+			dateText.setText(dayOfMonth);
+			timeText.setText(time);
 		}
 	}
 }
