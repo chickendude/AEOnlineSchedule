@@ -5,6 +5,10 @@
 		android:icon="@drawable/icon_schedule"
 		android:title="@string/schedule"/>
 	<item
+		android:id="@+id/menu_my_classes"
+		android:icon="@drawable/icon_my_classes"
+		android:title="@string/my_classes"/>
+	<item
 		android:id="@+id/menu_invoice"
 		android:icon="@drawable/icon_invoice"
 		android:title="@string/invoice"/>

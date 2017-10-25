@@ -56,10 +56,17 @@ public class ScheduleFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
+		// get current date
 		Calendar calendar = Calendar.getInstance();
-		calendar.get(Calendar.MONTH);
-		String month = new SimpleDateFormat("MMMM", Locale.ENGLISH).format(new Date());
-		getActivity().setTitle("Schedule for " + month);
+		// create our date format
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+		// get the starting date
+		String startDate = simpleDateFormat.format(calendar.getTime());
+		// move one week ahead for end date
+		calendar.add(Calendar.DAY_OF_MONTH, 7);
+		String endDate = simpleDateFormat.format(calendar.getTime());
+		// set title
+		getActivity().setTitle(String.format("Schedule: %s - %s", startDate, endDate));
 	}
 
 	/**
