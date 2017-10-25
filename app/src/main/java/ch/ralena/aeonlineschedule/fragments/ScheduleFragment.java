@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.adapters.ScheduleAdapter;
@@ -57,7 +58,7 @@ public class ScheduleFragment extends Fragment {
 		super.onStart();
 		Calendar calendar = Calendar.getInstance();
 		calendar.get(Calendar.MONTH);
-		String month = new SimpleDateFormat("MMMM").format(new Date());
+		String month = new SimpleDateFormat("MMMM", Locale.ENGLISH).format(new Date());
 		getActivity().setTitle("Schedule for " + month);
 	}
 

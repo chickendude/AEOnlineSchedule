@@ -36,9 +36,9 @@
 			android:id="@+id/classDateValue"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
 			android:layout_below="@id/studentNameEdit"
-			android:layout_toRightOf="@id/classDateLabel"
+			android:layout_toEndOf="@id/classDateLabel"
 			android:text="@string/click_to_set"
 			android:textAlignment="textEnd"
 			android:textSize="24sp"/>
@@ -50,16 +50,16 @@
 			android:layout_height="wrap_content"
 			android:layout_below="@id/classDateLabel"
 			android:layout_marginBottom="8dp"
-			android:text="Time:"
+			android:text="@string/time_in_china"
 			android:textSize="24sp"/>
 
 		<TextView
 			android:id="@+id/classTimeValue"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_alignParentRight="true"
+			android:layout_alignParentEnd="true"
 			android:layout_below="@id/classDateLabel"
-			android:layout_toRightOf="@id/classTimeLabel"
+			android:layout_toEndOf="@id/classTimeLabel"
 			android:text="@string/click_to_set"
 			android:textAlignment="textEnd"
 			android:textSize="24sp"/>
@@ -71,7 +71,7 @@
 			android:layout_below="@id/classTimeLabel"
 			android:layout_marginBottom="16dp"
 			android:gravity="top"
-			android:hint="Notes about class"
+			android:hint="@string/notes_about_class"
 			android:lines="2"
 			android:textSize="24sp"/>
 
@@ -80,7 +80,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/notesEdit"
-			android:text="Create class"/>
+			android:text="@string/create_class"/>
 
 	</RelativeLayout>
 </ScrollView>

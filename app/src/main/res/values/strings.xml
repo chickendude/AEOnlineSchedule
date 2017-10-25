@@ -5,4 +5,7 @@
 	<string name="students_name">Student\'s Name</string>
 	<string name="class_date">Class Date:</string>
 	<string name="click_to_set">(click to set)</string>
+	<string name="time_in_china">Time in China:</string>
+	<string name="notes_about_class">Notes about class</string>
+	<string name="create_class">Create class</string>
 </resources>
