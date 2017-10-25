@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import ch.ralena.aeonlineschedule.R;
@@ -31,7 +34,8 @@ public class ScheduleFragment extends Fragment {
 		// load data
 		Realm realm = Realm.getDefaultInstance();
 
-		scheduledClasses = realm.where(ScheduledClass.class).findAll();;
+		Date date = new Date();
+		scheduledClasses = realm.where(ScheduledClass.class).greaterThan("date", date).findAllSorted("date");
 
 		// inflate layout
 		View view = inflater.inflate(R.layout.fragment_schedule, container, false);
@@ -46,6 +50,15 @@ public class ScheduleFragment extends Fragment {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 		return view;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		Calendar calendar = Calendar.getInstance();
+		calendar.get(Calendar.MONTH);
+		String month = new SimpleDateFormat("MMMM").format(new Date());
+		getActivity().setTitle("Schedule for " + month);
 	}
 
 	/**

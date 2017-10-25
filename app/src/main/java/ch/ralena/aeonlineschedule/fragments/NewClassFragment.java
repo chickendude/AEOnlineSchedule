@@ -92,16 +92,9 @@ public class NewClassFragment extends Fragment {
 
 		realm = Realm.getDefaultInstance();
 
-		// make sure Calendar object is in CST.
-		calendar = GregorianCalendar.getInstance();
-		calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-		// clear out seconds and ms places
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+		setUpCalendar();
 
 		rootView = inflater.inflate(R.layout.fragment_new_class, container, false);
-
 
 		// set up click listeners for date and time
 		setUpDateAndTime();
@@ -110,6 +103,20 @@ public class NewClassFragment extends Fragment {
 		setUpSubmitButton();
 
 		return rootView;
+	}
+
+
+	/**
+	 * Create calendar object and initialize it's values.
+	 */
+	private void setUpCalendar() {
+		// make sure Calendar object is in CST.
+		calendar = GregorianCalendar.getInstance();
+		calendar.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+		// clear out minutes, seconds, and ms places
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 	}
 
 	/**
