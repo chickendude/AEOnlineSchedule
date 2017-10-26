@@ -17,7 +17,6 @@ import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 /**
  * Adapter for the Schedule Fragment recycler view
  */
-
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 	private List<ScheduledClass> scheduledClasses;
 

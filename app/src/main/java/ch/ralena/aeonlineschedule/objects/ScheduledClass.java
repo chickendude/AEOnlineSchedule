@@ -16,6 +16,32 @@ public class ScheduledClass extends RealmObject {
 	private String notes;
 	private String summary;
 	private Student student;
+	private ClassType classType;
+	private boolean isCompleted;
+
+	public boolean isCompleted() {
+		return isCompleted;
+	}
+
+	public void setCompleted(boolean completed) {
+		isCompleted = completed;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public ClassType getClassType() {
+		return classType;
+	}
+
+	public void setClassType(ClassType classType) {
+		this.classType = classType;
+	}
 
 	public Date getDate() {
 		return date;
