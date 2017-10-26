@@ -35,4 +35,6 @@ public class ClassType extends RealmObject {
 	public void setNumMinutes(int numMinutes) {
 		this.numMinutes = numMinutes;
 	}
+
+
 }
