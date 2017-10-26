@@ -9,17 +9,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.flexbox.FlexboxLayout;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.UUID;
 
 import ch.ralena.aeonlineschedule.R;
+import ch.ralena.aeonlineschedule.objects.ClassType;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import ch.ralena.aeonlineschedule.objects.Student;
 import io.realm.Realm;
@@ -31,8 +37,11 @@ public class NewClassFragment extends Fragment {
 	View rootView;
 	TextView classDateValue;
 	TextView classTimeValue;
+	FlexboxLayout classTypeFlexbox;
 	Calendar calendar;
 	Realm realm;
+	List<ClassType> classTypes;
+	int checkedBoxIndex;
 
 	/**
 	 * OnClickListener to bring up a 24h time dialog when the view is clicked and update the view's text with the chose time.
@@ -90,19 +99,47 @@ public class NewClassFragment extends Fragment {
 		// set bar title
 		getActivity().setTitle("Add new Class");
 
+		// load realm and class type from db
 		realm = Realm.getDefaultInstance();
-
-		setUpCalendar();
+		classTypes = realm.where(ClassType.class).findAll();
 
 		rootView = inflater.inflate(R.layout.fragment_new_class, container, false);
 
-		// set up click listeners for date and time
-		setUpDateAndTime();
+		classTypeFlexbox = rootView.findViewById(R.id.classTypeLayout);
 
-		// submit button
+		loadClassTypes();
+		setUpCalendar();
+		setUpDateAndTime();
 		setUpSubmitButton();
 
 		return rootView;
+	}
+
+	private void loadClassTypes() {
+		List<CheckBox> classTypeBoxes = new ArrayList<>();
+		for (ClassType classType : classTypes) {
+			CheckBox checkBox = new CheckBox(classTypeFlexbox.getContext());
+			checkBox.setText(classType.getName());
+			checkBox.setOnClickListener(view -> {
+				// on click uncheck all other boxes and save index of currently clicked box
+				for (CheckBox classTypeBox : classTypeBoxes) {
+					classTypeBox.setChecked(false);
+				}
+				checkBox.setChecked(true);
+				checkedBoxIndex = classTypeBoxes.indexOf(checkBox);
+			});
+			classTypeBoxes.add(checkBox);
+			int numViews = classTypeFlexbox.getChildCount();
+			classTypeFlexbox.addView(checkBox, numViews - 1);
+		}
+		TextView editLabel = classTypeFlexbox.findViewById(R.id.editLabel);
+		editLabel.setOnClickListener(view -> {
+			ClassTypeFragment classTypeFragment = new ClassTypeFragment();
+			getFragmentManager().beginTransaction()
+					.replace(R.id.fragmentContainer, classTypeFragment)
+					.addToBackStack(null)
+					.commit();
+		});
 	}
 
 
