@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -57,6 +58,13 @@ public class ScheduleFragment extends Fragment {
 		adapter = new ScheduleAdapter(scheduledClasses);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+		// set up swipe refresh layout
+		SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+		swipeRefreshLayout.setOnRefreshListener(() -> {
+			adapter.notifyDataSetChanged();
+			swipeRefreshLayout.setRefreshing(false);
+		});
 		return view;
 	}
 
