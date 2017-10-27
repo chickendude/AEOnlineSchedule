@@ -23,7 +23,7 @@ import io.realm.Realm;
 
 public class ClassTypeFragment extends Fragment {
 	RecyclerView classTypeRecyclerView;
-	RecyclerView newClassTypeRecyclerView;
+	NewClassTypeAdapter adapter;
 	Realm realm;
 	List<ClassType> classTypes;
 
@@ -49,7 +49,7 @@ public class ClassTypeFragment extends Fragment {
 			askToLoadDefaultClassTypes();
 		}
 		// create adapter and set layout manager
-		NewClassTypeAdapter adapter = new NewClassTypeAdapter(classTypes);
+		adapter = new NewClassTypeAdapter(classTypes);
 		classTypeRecyclerView.setAdapter(adapter);
 		classTypeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 	}
@@ -93,6 +93,6 @@ public class ClassTypeFragment extends Fragment {
 				classType.setWage(15f);        // todo: Load default wage value from options
 			}
 		});
-//		classTypes = realm.where(ClassType.class).findAll();
+		adapter.notifyDataSetChanged();
 	}
 }
