@@ -11,4 +11,7 @@
 	<string name="my_classes">My Classes</string>
 	<string name="options">Options</string>
 	<string name="edit">edit</string>
+	<string name="add_new_class_type">Add New Class Type</string>
+	<string name="rate">Rate:</string>
+	<string name="length">Length:</string>
 </resources>
