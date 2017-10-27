@@ -84,6 +84,7 @@ public class ClassTypeFragment extends Fragment {
 				classType.setName(classTypeName);
 				classType.setNumMinutes(40);
 				classType.setWage(15f);        // todo: Load default wage value from options
+				classType.setEnabled(false);
 			}
 			// classes that take 45 minutes
 			for (String classTypeName : classType45Names) {
@@ -91,6 +92,7 @@ public class ClassTypeFragment extends Fragment {
 				classType.setName(classTypeName);
 				classType.setNumMinutes(40);
 				classType.setWage(15f);        // todo: Load default wage value from options
+				classType.setEnabled(false);
 			}
 		});
 		adapter.notifyDataSetChanged();

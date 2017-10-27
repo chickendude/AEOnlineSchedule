@@ -101,7 +101,7 @@ public class NewClassFragment extends Fragment {
 
 		// load realm and class type from db
 		realm = Realm.getDefaultInstance();
-		classTypes = realm.where(ClassType.class).findAll();
+		classTypes = realm.where(ClassType.class).equalTo("isEnabled", true).findAll().sort("name");
 
 		rootView = inflater.inflate(R.layout.fragment_new_class, container, false);
 

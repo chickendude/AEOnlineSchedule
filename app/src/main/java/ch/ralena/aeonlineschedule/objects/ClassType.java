@@ -11,6 +11,15 @@ public class ClassType extends RealmObject {
 	private String name;
 	private float wage;
 	private int numMinutes;
+	private boolean isEnabled;
+
+	public boolean isEnabled() {
+		return isEnabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		isEnabled = enabled;
+	}
 
 	public String getName() {
 		return name;
