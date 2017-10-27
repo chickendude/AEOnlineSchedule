@@ -14,4 +14,6 @@
 	<string name="add_new_class_type">Add New Class Type</string>
 	<string name="rate">Rate:</string>
 	<string name="length">Length:</string>
+	<string name="class_types">Class Types:</string>
+	<string name="no_scheduled_classes">No scheduled classes!</string>
 </resources>

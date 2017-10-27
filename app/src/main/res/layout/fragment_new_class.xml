@@ -26,22 +26,20 @@
 
 		<TextView
 			android:id="@+id/classDateLabel"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_below="@id/studentNameEdit"
-			android:layout_marginBottom="8dp"
 			android:text="@string/class_date"
-			android:textSize="24sp"/>
+			android:textSize="14sp"/>
 
 		<TextView
 			android:id="@+id/classDateValue"
-			android:layout_width="wrap_content"
+			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentEnd="true"
-			android:layout_below="@id/studentNameEdit"
-			android:layout_toEndOf="@id/classDateLabel"
+			android:layout_below="@id/classDateLabel"
 			android:text="@string/click_to_set"
-			android:textAlignment="textEnd"
+			android:textAlignment="center"
 			android:textSize="24sp"/>
 
 
@@ -49,36 +47,52 @@
 			android:id="@+id/classTimeLabel"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/classDateLabel"
-			android:layout_marginBottom="8dp"
+			android:layout_below="@id/classDateValue"
 			android:text="@string/time_in_china"
-			android:textSize="24sp"/>
+			android:textSize="14sp"/>
 
 		<TextView
 			android:id="@+id/classTimeValue"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentEnd="true"
-			android:layout_below="@id/classDateLabel"
-			android:layout_toEndOf="@id/classTimeLabel"
+			android:layout_below="@id/classTimeLabel"
 			android:text="@string/click_to_set"
-			android:textAlignment="textEnd"
+			android:textAlignment="center"
 			android:textSize="24sp"/>
+
+		<TextView
+			android:id="@+id/classTypesLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/classTimeValue"
+			android:text="@string/class_types"
+			android:gravity="center"
+			android:layout_alignTop="@id/editLabel"
+			android:layout_alignBottom="@id/editLabel"
+			android:textSize="14sp"/>
+
+		<TextView
+			android:id="@+id/editLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/classTimeValue"
+			android:paddingLeft="12dp"
+			android:paddingRight="12dp"
+			android:layout_toEndOf="@id/classTypesLabel"
+			android:text="@string/edit"
+			android:textColor="@color/colorPrimary"
+			android:textSize="16sp"/>
 
 		<com.google.android.flexbox.FlexboxLayout
 			android:id="@+id/classTypeLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/classTimeLabel"
+			android:layout_below="@id/classTypesLabel"
+			app:alignContent="center"
+			app:alignItems="center"
 			app:flexWrap="wrap">
 
-			<TextView
-				android:id="@+id/editLabel"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:padding="3dp"
-				android:text="@string/edit"
-				android:textColor="@color/colorPrimary"/>
 		</com.google.android.flexbox.FlexboxLayout>
 
 		<EditText

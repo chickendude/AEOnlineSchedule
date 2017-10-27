@@ -17,7 +17,6 @@ import io.realm.Realm;
 /**
  * Recycler View adapter for new class types.
  */
-// TODO: 10/27/2017 Add extra row at the bottom for a "new class type"
 public class NewClassTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 	private List<ClassType> classTypes;
 	private Realm realm;

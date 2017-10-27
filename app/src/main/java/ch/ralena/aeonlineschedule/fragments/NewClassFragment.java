@@ -43,56 +43,6 @@ public class NewClassFragment extends Fragment {
 	List<ClassType> classTypes;
 	int checkedBoxIndex;
 
-	/**
-	 * OnClickListener to bring up a 24h time dialog when the view is clicked and update the view's text with the chose time.
-	 */
-	View.OnClickListener classTimeClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, hourOfDay, minute) -> {
-				// if an erroneous time was chosen, just reset it to 0
-				if (minute != 0 && minute != 30) {
-					minute = 0;
-				}
-				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
-				calendar.set(Calendar.MINUTE, minute);
-				Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
-				calendarHere.setTime(calendar.getTime());
-
-				String classTime = String.format(Locale.ENGLISH, "%02d:%02d CST\n%02d:%02d here", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
-
-				classTimeValue.setText(classTime);
-			};
-			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
-			timePickerDialog.show();
-		}
-	};
-
-	/**
-	 * OnClickListener to bring up a DatePicker dialog box when the view is clicked.
-	 */
-	View.OnClickListener classDateClickListener = new View.OnClickListener() {
-		@Override
-		public void onClick(View view) {
-			DatePickerDialog.OnDateSetListener onDateSetListener = (datePicker, year, month, dayOfMonth) -> {
-				// convert returned integer values into a calendar object to pass into the SimpleDateFormat object
-				calendar.set(year, month, dayOfMonth);
-				// Sat. Oct. 21, 2017
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E. MMM. d, yyyy", Locale.US);
-				simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-				// update text
-				classDateValue.setText(simpleDateFormat.format(calendar.getTime()));
-			};
-			Calendar c = Calendar.getInstance(TimeZone.getDefault());
-			DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-					onDateSetListener,
-					c.get(Calendar.YEAR),
-					c.get(Calendar.MONTH),
-					c.get(Calendar.DAY_OF_MONTH));
-			datePickerDialog.show();
-		}
-	};
-
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -106,6 +56,16 @@ public class NewClassFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.fragment_new_class, container, false);
 
 		classTypeFlexbox = rootView.findViewById(R.id.classTypeLayout);
+
+		TextView editLabel = rootView.findViewById(R.id.editLabel);
+		editLabel.setOnClickListener(view -> {
+			ClassTypeFragment classTypeFragment = new ClassTypeFragment();
+			getFragmentManager().beginTransaction()
+					.replace(R.id.fragmentContainer, classTypeFragment)
+					.addToBackStack(null)
+					.commit();
+		});
+
 
 		loadClassTypes();
 		setUpCalendar();
@@ -132,14 +92,6 @@ public class NewClassFragment extends Fragment {
 			int numViews = classTypeFlexbox.getChildCount();
 			classTypeFlexbox.addView(checkBox, numViews - 1);
 		}
-		TextView editLabel = classTypeFlexbox.findViewById(R.id.editLabel);
-		editLabel.setOnClickListener(view -> {
-			ClassTypeFragment classTypeFragment = new ClassTypeFragment();
-			getFragmentManager().beginTransaction()
-					.replace(R.id.fragmentContainer, classTypeFragment)
-					.addToBackStack(null)
-					.commit();
-		});
 	}
 
 
@@ -187,15 +139,45 @@ public class NewClassFragment extends Fragment {
 	 */
 	private void setUpDateAndTime() {
 		// date
-		TextView classDateLabel = rootView.findViewById(R.id.classDateLabel);
-		classDateLabel.setOnClickListener(classDateClickListener);
 		classDateValue = rootView.findViewById(R.id.classDateValue);
-		classDateValue.setOnClickListener(classDateClickListener);
+		classDateValue.setOnClickListener(view -> {
+			DatePickerDialog.OnDateSetListener onDateSetListener = (datePicker, year, month, dayOfMonth) -> {
+				// convert returned integer values into a calendar object to pass into the SimpleDateFormat object
+				calendar.set(year, month, dayOfMonth);
+				// Sat. Oct. 21, 2017
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E. MMM. d, yyyy", Locale.US);
+				simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+				// update text
+				classDateValue.setText(simpleDateFormat.format(calendar.getTime()));
+			};
+			Calendar c = Calendar.getInstance(TimeZone.getDefault());
+			DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+					onDateSetListener,
+					c.get(Calendar.YEAR),
+					c.get(Calendar.MONTH),
+					c.get(Calendar.DAY_OF_MONTH));
+			datePickerDialog.show();
+		});
 
 		// time
-		TextView classTimeLabel = rootView.findViewById(R.id.classTimeLabel);
-		classTimeLabel.setOnClickListener(classTimeClickListener);
 		classTimeValue = rootView.findViewById(R.id.classTimeValue);
-		classTimeValue.setOnClickListener(classTimeClickListener);
+		classTimeValue.setOnClickListener(view -> {
+			TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, hourOfDay, minute) -> {
+				// if an erroneous time was chosen, just reset it to 0
+				if (minute != 0 && minute != 30) {
+					minute = 0;
+				}
+				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+				calendar.set(Calendar.MINUTE, minute);
+				Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
+				calendarHere.setTime(calendar.getTime());
+
+				String classTime = String.format(Locale.ENGLISH, "%02d:%02d CST - %02d:%02d local", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
+
+				classTimeValue.setText(classTime);
+			};
+			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+			timePickerDialog.show();
+		});
 	}
 }
