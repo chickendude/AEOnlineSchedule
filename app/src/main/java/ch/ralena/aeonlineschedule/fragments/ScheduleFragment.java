@@ -74,7 +74,7 @@ public class ScheduleFragment extends Fragment {
 		// get current date
 		Calendar calendar = Calendar.getInstance();
 		// create our date format
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM. d", Locale.ENGLISH);
 		// get the starting date
 		String startDate = simpleDateFormat.format(calendar.getTime());
 		// move one week ahead for end date
