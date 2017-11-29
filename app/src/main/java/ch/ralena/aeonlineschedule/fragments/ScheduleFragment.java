@@ -28,6 +28,8 @@ import io.realm.Realm;
  * You can also add new schedules by clicking the FAB button.
  */
 public class ScheduleFragment extends Fragment {
+	private static final String TAG = ScheduleFragment.class.getSimpleName();
+	public static final String EXTRA_CLASS_ID = "extra_class_id";
 	List<ScheduledClass> scheduledClasses;
 	ScheduleAdapter adapter;
 
@@ -58,6 +60,8 @@ public class ScheduleFragment extends Fragment {
 		adapter = new ScheduleAdapter(scheduledClasses);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		// click on recyclerview item loads that class's detail page
+		adapter.asObservable().subscribe(this::viewClassDetail);
 
 		// set up swipe refresh layout
 		SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -82,6 +86,20 @@ public class ScheduleFragment extends Fragment {
 		String endDate = simpleDateFormat.format(calendar.getTime());
 		// set title
 		getActivity().setTitle(String.format("Schedule: %s - %s", startDate, endDate));
+	}
+
+	private void viewClassDetail(String classId) {
+		ClassDetailFragment fragment = new ClassDetailFragment();
+
+		Bundle bundle = new Bundle();
+		bundle.putString(EXTRA_CLASS_ID, classId);
+		fragment.setArguments(bundle);
+
+		getFragmentManager().beginTransaction()
+				.replace(R.id.fragmentContainer, fragment)
+				.addToBackStack(null)
+				.commit();
+
 	}
 
 	/**

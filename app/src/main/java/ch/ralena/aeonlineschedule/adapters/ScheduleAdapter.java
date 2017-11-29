@@ -13,12 +13,20 @@ import java.util.Locale;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * Adapter for the Schedule Fragment recycler view
  */
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 	private List<ScheduledClass> scheduledClasses;
+
+	PublishSubject<String> classPublishSubject = PublishSubject.create();
+
+	public Observable<String> asObservable() {
+		return classPublishSubject;
+	}
 
 	public ScheduleAdapter(List<ScheduledClass> scheduledClasses) {
 		this.scheduledClasses = scheduledClasses;
@@ -59,6 +67,8 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 		}
 
 		public void bindView(ScheduledClass scheduledClass) {
+			// pass item clicks back to the ScheduleFragment
+			itemView.setOnClickListener(view -> classPublishSubject.onNext(scheduledClass.getId()));
 			String studentName = scheduledClass.getStudent().getName();
 			studentNameText.setText(studentName);
 
