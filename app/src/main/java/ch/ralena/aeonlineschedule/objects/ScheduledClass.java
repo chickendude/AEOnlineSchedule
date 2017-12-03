@@ -1,6 +1,8 @@
 package ch.ralena.aeonlineschedule.objects;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -73,5 +75,26 @@ public class ScheduledClass extends RealmObject {
 
 	public void setSummary(String summary) {
 		this.summary = summary;
+	}
+
+	private String formatDate(String pattern) {
+		return new SimpleDateFormat(pattern, Locale.US).format(date);
+	}
+
+	public String getDayOfMonth() {
+		return formatDate("d");
+	}
+
+	public String getDayOfWeek() {
+		return formatDate("E");
+	}
+
+	public String getTime() {
+		return formatDate("hh:mm a");
+	}
+
+	public String getMonth() {
+		return formatDate("MMMM");
+
 	}
 }

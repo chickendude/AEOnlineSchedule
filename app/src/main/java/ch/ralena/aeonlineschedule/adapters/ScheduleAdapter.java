@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -73,9 +72,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 			studentNameText.setText(studentName);
 
 			// get strings from Date
-			String dayOfWeek = new SimpleDateFormat("E", Locale.ENGLISH).format(scheduledClass.getDate());
-			String dayOfMonth = new SimpleDateFormat("d", Locale.ENGLISH).format(scheduledClass.getDate());
-			String time = new SimpleDateFormat("hh:mm a", Locale.ENGLISH).format(scheduledClass.getDate());
+			String dayOfWeek = scheduledClass.getDayOfWeek();
+			String dayOfMonth = scheduledClass.getDayOfMonth();
+			String time = scheduledClass.getTime();
 
 			// calculate the time left until class starts
 			Long timeDifference = scheduledClass.getDate().getTime() - new Date().getTime();

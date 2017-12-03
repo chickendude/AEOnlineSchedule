@@ -5,6 +5,7 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
+import ch.ralena.aeonlineschedule.fragments.MyClassesFragment;
 import ch.ralena.aeonlineschedule.fragments.ScheduleFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -23,6 +24,9 @@ public class MainActivity extends AppCompatActivity {
 			switch (item.getItemId()) {
 				case R.id.menu_schedule:
 					fragment = new ScheduleFragment();
+					break;
+				case R.id.menu_my_classes:
+					fragment = new MyClassesFragment();
 					break;
 				case R.id.menu_invoice:
 					fragment = new ScheduleFragment();
