@@ -1,5 +1,6 @@
 package ch.ralena.aeonlineschedule.adapters;
 
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,7 +77,16 @@ public class StudentSelectAdapter extends AEAdapter<Student> {
 									editObservable.onNext(student);
 									break;
 								case R.id.delete:
-									Realm.getDefaultInstance().where(Student.class).equalTo("id", student.getId()).findAll().deleteAllFromRealm();
+									if (student.deleteStudent(Realm.getDefaultInstance())) {
+										notifyDataSetChanged();
+									}else{
+										Snackbar snackbar = Snackbar.make(view, "This student still has classes associated to him/her. Delete all classes?", Snackbar.LENGTH_INDEFINITE);
+										snackbar.setAction("Delete", view1 -> {
+											student.deleteStudentAndClasses(Realm.getDefaultInstance());
+											notifyDataSetChanged();
+										});
+										snackbar.show();
+									}
 									break;
 							}
 							return true;

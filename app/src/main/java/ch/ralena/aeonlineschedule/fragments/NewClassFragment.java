@@ -55,6 +55,7 @@ public class NewClassFragment extends Fragment {
 	Calendar calendar;
 	Realm realm;
 	List<ClassType> classTypes;
+	List<CheckBox> classTypeBoxes;
 	int checkedBoxIndex;
 	Student curStudent;
 
@@ -155,7 +156,7 @@ public class NewClassFragment extends Fragment {
 	}
 
 	private void loadClassTypes() {
-		List<CheckBox> classTypeBoxes = new ArrayList<>();
+		classTypeBoxes = new ArrayList<>();
 		checkPublish.subscribe(id -> {
 			for (CheckBox classTypeBox : classTypeBoxes) {
 				classTypeBox.setChecked(false);

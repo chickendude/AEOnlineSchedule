@@ -95,6 +95,5 @@ public class ScheduledClass extends RealmObject {
 
 	public String getMonth() {
 		return formatDate("MMMM");
-
 	}
 }
