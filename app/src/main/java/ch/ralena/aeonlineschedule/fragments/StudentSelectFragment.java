@@ -84,6 +84,16 @@ public class StudentSelectFragment extends Fragment {
 				getFragmentManager().popBackStackImmediate();
 			}
 		});
+		adapter.asObservableEdit().subscribe(student -> {
+			EditStudentFragment fragment = new EditStudentFragment();
+			Bundle bundle = new Bundle();
+			bundle.putString(EditStudentFragment.EXTRA_STUDENT_ID, student.getId());
+			fragment.setArguments(bundle);
+			getFragmentManager().beginTransaction()
+					.replace(R.id.fragmentContainer, fragment)
+					.addToBackStack(null)
+					.commit();
+		});
 
 
 		return view;

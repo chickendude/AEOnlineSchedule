@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
@@ -11,13 +12,19 @@ import java.util.List;
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.Student;
 import io.reactivex.subjects.PublishSubject;
+import io.realm.Realm;
 
 public class StudentSelectAdapter extends AEAdapter<Student> {
 	PublishSubject<Student> studentObservable = PublishSubject.create();
+	PublishSubject<Student> editObservable = PublishSubject.create();
 	PublishSubject<View> buttonObservable = PublishSubject.create();
 
 	public PublishSubject<Student> asObservableStudent() {
 		return studentObservable;
+	}
+
+	public PublishSubject<Student> asObservableEdit() {
+		return editObservable;
 	}
 
 	public PublishSubject<View> asObservableButton() {
@@ -45,7 +52,7 @@ public class StudentSelectAdapter extends AEAdapter<Student> {
 
 	@Override
 	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-		if(viewType == TYPE_NORMAL) {
+		if (viewType == TYPE_NORMAL) {
 			// students
 			View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student, parent, false);
 			return new AEViewHolder(view) {
@@ -60,6 +67,23 @@ public class StudentSelectAdapter extends AEAdapter<Student> {
 				void bindView(Student student) {
 					studentName.setText(student.getName());
 					view.setOnClickListener(v -> studentObservable.onNext(student));
+					view.setOnLongClickListener(v -> {
+						PopupMenu popup = new PopupMenu(view.getContext(), view);
+						popup.getMenuInflater().inflate(R.menu.student, popup.getMenu());
+						popup.setOnMenuItemClickListener(menuItem -> {
+							switch (menuItem.getItemId()) {
+								case R.id.edit:
+									editObservable.onNext(student);
+									break;
+								case R.id.delete:
+									Realm.getDefaultInstance().where(Student.class).equalTo("id", student.getId()).findAll().deleteAllFromRealm();
+									break;
+							}
+							return true;
+						});
+						popup.show();
+						return true;
+					});
 				}
 			};
 		} else {
