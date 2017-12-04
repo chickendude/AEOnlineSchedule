@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
 									xmlns:tools="http://schemas.android.com/tools"
+									android:layout_margin="1dp"
 									android:layout_width="match_parent"
 									android:layout_height="wrap_content">
 
@@ -12,10 +13,19 @@
 		android:orientation="horizontal"
 		android:padding="4dp">
 
+		<TextView
+			android:id="@+id/monthNameText"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textAlignment="center"
+			android:textSize="20sp"
+			tools:text="January"/>
+
 		<LinearLayout
 			android:id="@+id/dateLayout"
 			android:layout_width="45dp"
 			android:layout_height="wrap_content"
+			android:layout_below="@id/monthNameText"
 			android:layout_marginRight="8dp"
 			android:gravity="center"
 			android:orientation="vertical">
@@ -40,6 +50,7 @@
 			android:id="@+id/hourLayout"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
+			android:layout_below="@id/monthNameText"
 			android:layout_toRightOf="@id/dateLayout"
 			android:orientation="vertical">
 
@@ -64,6 +75,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
+			android:layout_below="@id/monthNameText"
 			android:textColor="@color/colorAccent"
 			android:textSize="14sp"
 			tools:text="4h left"/>
