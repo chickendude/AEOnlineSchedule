@@ -40,8 +40,11 @@ public class NewClassFragment extends Fragment {
 	public static final String EXTRA_IS_NEW = "extra_is_new";
 	public static final String KEY_DATE = "key_date";
 	public static final String KEY_TIME = "key_time";
+	public static final String KEY_STUDENT_ID = "key_student_id";
+	public static final String KEY_CHECKED_BOX = "key_checked_box";
 
 	View rootView;
+	TextView studentNameText;
 	TextView classDateValue;
 	TextView classTimeValue;
 	FlexboxLayout classTypeFlexbox;
@@ -50,10 +53,12 @@ public class NewClassFragment extends Fragment {
 	Realm realm;
 	List<ClassType> classTypes;
 	int checkedBoxIndex;
+	Student curStudent;
 
 	SharedPreferences sharedPreferences;
 	PublishSubject<Calendar> datePublish = PublishSubject.create();
 	PublishSubject<Calendar> timePublish = PublishSubject.create();
+	PublishSubject<Integer> checkPublish = PublishSubject.create();
 
 	@Nullable
 	@Override
@@ -80,7 +85,7 @@ public class NewClassFragment extends Fragment {
 					.commit();
 		});
 
-		TextView studentNameText = rootView.findViewById(R.id.studentNameText);
+		studentNameText = rootView.findViewById(R.id.studentNameText);
 		studentNameText.setOnClickListener(view -> {
 			StudentSelectFragment fragment = new StudentSelectFragment();
 			getFragmentManager().beginTransaction()
@@ -94,7 +99,12 @@ public class NewClassFragment extends Fragment {
 		setUpCalendar();
 		setUpDateAndTime();
 		setUpSubmitButton();
+		loadSharedPreferences();
 
+		return rootView;
+	}
+
+	private void loadSharedPreferences() {
 		// check if we need to load saved data
 		boolean is_new = getArguments().getBoolean(EXTRA_IS_NEW);
 		if (is_new) {
@@ -102,8 +112,19 @@ public class NewClassFragment extends Fragment {
 			sharedPreferences.edit()
 					.remove(KEY_DATE)
 					.remove(KEY_TIME)
+					.remove(KEY_STUDENT_ID)
+					.remove(KEY_CHECKED_BOX)
 					.apply();
 		} else {
+			// load student
+			String studentId = sharedPreferences.getString(KEY_STUDENT_ID, "");
+			if (!studentId.isEmpty()) {
+				curStudent = realm.where(Student.class).equalTo("id", studentId).findFirst();
+				if(curStudent != null) {
+					studentNameText.setText(curStudent.getName());
+				}
+			}
+			// load date/time
 			long dateMillis = sharedPreferences.getLong(KEY_DATE, 0);
 			long timeMillis = sharedPreferences.getLong(KEY_TIME, 0);
 			TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
@@ -123,23 +144,30 @@ public class NewClassFragment extends Fragment {
 				datePublish.onNext(calendar);
 			if (timeMillis > 0)
 				timePublish.onNext(calendar);
+			// load checked box
+			checkedBoxIndex = sharedPreferences.getInt(KEY_CHECKED_BOX, -1);
+			if (checkedBoxIndex >= 0)
+				checkPublish.onNext(checkedBoxIndex);
 		}
-
-		return rootView;
 	}
 
 	private void loadClassTypes() {
 		List<CheckBox> classTypeBoxes = new ArrayList<>();
+		checkPublish.subscribe(id -> {
+			for (CheckBox classTypeBox : classTypeBoxes) {
+				classTypeBox.setChecked(false);
+			}
+			classTypeBoxes.get(id).setChecked(true);
+		});
+
 		for (ClassType classType : classTypes) {
 			CheckBox checkBox = new CheckBox(classTypeFlexbox.getContext());
 			checkBox.setText(classType.getName());
 			checkBox.setOnClickListener(view -> {
 				// on click uncheck all other boxes and save index of currently clicked box
-				for (CheckBox classTypeBox : classTypeBoxes) {
-					classTypeBox.setChecked(false);
-				}
-				checkBox.setChecked(true);
 				checkedBoxIndex = classTypeBoxes.indexOf(checkBox);
+				sharedPreferences.edit().putInt(KEY_CHECKED_BOX, checkedBoxIndex).apply();
+				checkPublish.onNext(checkedBoxIndex);
 			});
 			classTypeBoxes.add(checkBox);
 			int numViews = classTypeFlexbox.getChildCount();
@@ -174,12 +202,9 @@ public class NewClassFragment extends Fragment {
 		button.setOnClickListener(v -> {
 			// create class
 			realm.executeTransaction(realm -> {
-				// create student object
-				Student student = realm.createObject(Student.class, UUID.randomUUID().toString());
-				student.setName(studentName.getText().toString());
 				// create class object
 				ScheduledClass scheduledClass = realm.createObject(ScheduledClass.class, UUID.randomUUID().toString());
-				scheduledClass.setStudent(student);
+				scheduledClass.setStudent(curStudent);
 				scheduledClass.setDate(calendar.getTime());
 				scheduledClass.setNotes(notesEdit.getText().toString());
 				getActivity().onBackPressed();
@@ -215,6 +240,7 @@ public class NewClassFragment extends Fragment {
 			classTimeValue.setText(classTime);
 			sharedPreferences.edit().putLong(KEY_TIME, cal.getTimeInMillis()).apply();
 		});
+		// dialog pickers for date and time
 		// date
 		classDateValue = rootView.findViewById(R.id.classDateValue);
 		classDateValue.setOnClickListener(view -> {

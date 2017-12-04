@@ -1,5 +1,7 @@
 package ch.ralena.aeonlineschedule.fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -63,6 +65,8 @@ public class StudentSelectFragment extends Fragment {
 
 		// set up rxjava subscriptions to clicks
 		adapter.asObservableStudent().subscribe(student -> {
+			SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+			sharedPreferences.edit().putString(NewClassFragment.KEY_STUDENT_ID, student.getId()).apply();
 			Toast.makeText(getContext(), student.getName(), Toast.LENGTH_SHORT).show();
 			getFragmentManager().popBackStackImmediate();
 		});

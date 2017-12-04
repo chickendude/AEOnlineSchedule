@@ -13,6 +13,10 @@ public class Student extends RealmObject {
 	private String name;
 	private String notes;
 
+	public String getId() {
+		return id;
+	}
+
 	public String getName() {
 		return name;
 	}
