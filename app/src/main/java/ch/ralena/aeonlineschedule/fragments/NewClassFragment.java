@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -160,6 +161,7 @@ public class NewClassFragment extends Fragment {
 				classTypeBox.setChecked(false);
 			}
 			classTypeBoxes.get(id).setChecked(true);
+			sharedPreferences.edit().putInt(KEY_CHECKED_BOX, id).apply();
 		});
 
 		for (ClassType classType : classTypes) {
@@ -168,7 +170,6 @@ public class NewClassFragment extends Fragment {
 			checkBox.setOnClickListener(view -> {
 				// on click uncheck all other boxes and save index of currently clicked box
 				checkedBoxIndex = classTypeBoxes.indexOf(checkBox);
-				sharedPreferences.edit().putInt(KEY_CHECKED_BOX, checkedBoxIndex).apply();
 				checkPublish.onNext(checkedBoxIndex);
 			});
 			classTypeBoxes.add(checkBox);
@@ -203,11 +204,26 @@ public class NewClassFragment extends Fragment {
 		Button button = rootView.findViewById(R.id.createClassButton);
 		button.setOnClickListener(v -> {
 			Map<String, ?> sharedMap = sharedPreferences.getAll();
-			if (sharedMap.get(KEY_STUDENT_ID) == null ||
-					sharedMap.get(KEY_DATE) == null ||
-					sharedMap.get(KEY_TIME) == null ||
-					sharedMap.get(KEY_CHECKED_BOX) == null) {
-				Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
+			Object studentIdObj = sharedMap.get(KEY_STUDENT_ID);
+			Object dateObj = sharedMap.get(KEY_DATE);
+			Object timeObj = sharedMap.get(KEY_TIME);
+			Object checkedObj = sharedMap.get(KEY_CHECKED_BOX);
+			if (studentIdObj == null ||
+					dateObj == null ||
+					timeObj == null ||
+					checkedObj == null) {
+				List<String> missingFields = new ArrayList<>();
+				if (studentIdObj == null)
+					missingFields.add("student");
+				if (dateObj == null)
+					missingFields.add("date");
+				if (timeObj == null)
+					missingFields.add("time");
+				if (checkedObj == null)
+					missingFields.add("class type");
+
+				String fieldsString = TextUtils.join(", ", missingFields);
+				Toast.makeText(getContext(), String.format("All fields obligatory, please fill in %s!", fieldsString), Toast.LENGTH_LONG).show();
 			} else {
 				// create class
 				realm.executeTransaction(realm -> {
