@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.UUID;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.adapters.StudentSelectAdapter;
@@ -34,6 +35,8 @@ public class StudentSelectFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		realm = Realm.getDefaultInstance();
+		SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+
 		students = realm.where(Student.class).findAllSorted("name");
 		View view = inflater.inflate(R.layout.fragment_student_select, container, false);
 
@@ -65,7 +68,6 @@ public class StudentSelectFragment extends Fragment {
 
 		// set up rxjava subscriptions to clicks
 		adapter.asObservableStudent().subscribe(student -> {
-			SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
 			sharedPreferences.edit().putString(NewClassFragment.KEY_STUDENT_ID, student.getId()).apply();
 			Toast.makeText(getContext(), student.getName(), Toast.LENGTH_SHORT).show();
 			getFragmentManager().popBackStackImmediate();
@@ -75,7 +77,13 @@ public class StudentSelectFragment extends Fragment {
 			if (name.isEmpty()) {
 				Toast.makeText(getContext(), "Student name must not be empty!", Toast.LENGTH_SHORT).show();
 			} else {
+				realm.executeTransaction(realm -> {
+					Student student = realm.createObject(Student.class, UUID.randomUUID().toString());
+					student.setName(name);
+					sharedPreferences.edit().putString(NewClassFragment.KEY_STUDENT_ID, student.getId()).apply();
+				});
 				Toast.makeText(getContext(), "Creating student!", Toast.LENGTH_SHORT).show();
+				getFragmentManager().popBackStackImmediate();
 			}
 		});
 
