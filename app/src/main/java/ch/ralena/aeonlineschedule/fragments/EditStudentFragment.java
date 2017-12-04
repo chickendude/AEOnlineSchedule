@@ -21,6 +21,7 @@ public class EditStudentFragment extends Fragment {
 	public static final String EXTRA_STUDENT_ID = "extra_student_id";
 
 	ActionBar actionBar;
+	EditText studentNameEdit;
 
 	Realm realm;
 	Student student;
@@ -39,7 +40,7 @@ public class EditStudentFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_edit_student, container, false);
 
-		EditText studentNameEdit = view.findViewById(R.id.studentNameEdit);
+		studentNameEdit = view.findViewById(R.id.studentNameEdit);
 		studentNameEdit.setText(student.getName());
 
 		return view;
@@ -47,13 +48,17 @@ public class EditStudentFragment extends Fragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		super.onCreateOptionsMenu(menu, inflater);
+		inflater.inflate(R.menu.check, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch(item.getItemId()) {
+		switch (item.getItemId()) {
 			case android.R.id.home:
+				getFragmentManager().popBackStackImmediate();
+				break;
+			case R.id.check:
+				realm.executeTransaction(realm -> student.setName(studentNameEdit.getText().toString()));
 				getFragmentManager().popBackStackImmediate();
 				break;
 		}
