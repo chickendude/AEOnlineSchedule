@@ -107,6 +107,9 @@ public class ScheduleFragment extends Fragment {
 	 */
 	private void addNewClass() {
 		NewClassFragment fragment = new NewClassFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(NewClassFragment.EXTRA_IS_NEW, true);
+		fragment.setArguments(bundle);
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentContainer, fragment)
 				.addToBackStack(null)

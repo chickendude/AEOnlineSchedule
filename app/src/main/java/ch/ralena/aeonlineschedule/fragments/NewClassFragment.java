@@ -2,6 +2,8 @@ package ch.ralena.aeonlineschedule.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,26 +30,38 @@ import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ClassType;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import ch.ralena.aeonlineschedule.objects.Student;
+import io.reactivex.subjects.PublishSubject;
 import io.realm.Realm;
 
 /**
  * Fragment for creating a new class.
  */
 public class NewClassFragment extends Fragment {
+	public static final String EXTRA_IS_NEW = "extra_is_new";
+	public static final String KEY_DATE = "key_date";
+	public static final String KEY_TIME = "key_time";
+
 	View rootView;
 	TextView classDateValue;
 	TextView classTimeValue;
 	FlexboxLayout classTypeFlexbox;
+
 	Calendar calendar;
 	Realm realm;
 	List<ClassType> classTypes;
 	int checkedBoxIndex;
+
+	SharedPreferences sharedPreferences;
+	PublishSubject<Calendar> datePublish = PublishSubject.create();
+	PublishSubject<Calendar> timePublish = PublishSubject.create();
 
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		// set bar title
 		getActivity().setTitle("Add new Class");
+
+		sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
 
 		// load realm and class type from db
 		realm = Realm.getDefaultInstance();
@@ -66,8 +80,8 @@ public class NewClassFragment extends Fragment {
 					.commit();
 		});
 
-		TextView studentEdit = rootView.findViewById(R.id.studentNameText);
-		studentEdit.setOnClickListener(view -> {
+		TextView studentNameText = rootView.findViewById(R.id.studentNameText);
+		studentNameText.setOnClickListener(view -> {
 			StudentSelectFragment fragment = new StudentSelectFragment();
 			getFragmentManager().beginTransaction()
 					.replace(R.id.fragmentContainer, fragment)
@@ -80,6 +94,36 @@ public class NewClassFragment extends Fragment {
 		setUpCalendar();
 		setUpDateAndTime();
 		setUpSubmitButton();
+
+		// check if we need to load saved data
+		boolean is_new = getArguments().getBoolean(EXTRA_IS_NEW);
+		if (is_new) {
+			getArguments().putBoolean(EXTRA_IS_NEW, false);
+			sharedPreferences.edit()
+					.remove(KEY_DATE)
+					.remove(KEY_TIME)
+					.apply();
+		} else {
+			long dateMillis = sharedPreferences.getLong(KEY_DATE, 0);
+			long timeMillis = sharedPreferences.getLong(KEY_TIME, 0);
+			TimeZone timeZone = TimeZone.getTimeZone("Asia/Shanghai");
+			Calendar dateCal = GregorianCalendar.getInstance();
+			Calendar timeCal = Calendar.getInstance();
+			dateCal.setTimeZone(timeZone);
+			timeCal.setTimeZone(timeZone);
+			dateCal.setTimeInMillis(dateMillis);
+			timeCal.setTimeInMillis(timeMillis);
+			int year = dateCal.get(Calendar.YEAR);
+			int month = dateCal.get(Calendar.MONTH);
+			int date = dateCal.get(Calendar.DATE);
+			int hour = timeCal.get(Calendar.HOUR_OF_DAY);
+			int minute = timeCal.get(Calendar.MINUTE);
+			calendar.set(year, month, date, hour, minute);
+			if (dateMillis > 0)
+				datePublish.onNext(calendar);
+			if (timeMillis > 0)
+				timePublish.onNext(calendar);
+		}
 
 		return rootView;
 	}
@@ -147,18 +191,40 @@ public class NewClassFragment extends Fragment {
 	 * Sets up onClickListeners for both textviews of date and time.
 	 */
 	private void setUpDateAndTime() {
+		// set up observables for date and time
+		datePublish.subscribe(cal -> {
+			// set up date
+			// Sat. Oct. 21, 2017
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E. MMM. d, yyyy", Locale.US);
+			simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
+			// update text
+			classDateValue.setText(simpleDateFormat.format(calendar.getTime()));
+			sharedPreferences.edit().putLong(KEY_DATE, cal.getTimeInMillis()).apply();
+		});
+		timePublish.subscribe(cal -> {
+			// set up time
+			Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
+			calendarHere.setTime(calendar.getTime());
+			String classTime = String.format(
+					Locale.ENGLISH,
+					"%02d:%02d CST - %02d:%02d local",
+					cal.get(Calendar.HOUR_OF_DAY),
+					cal.get(Calendar.MINUTE),
+					calendarHere.get(Calendar.HOUR_OF_DAY),
+					calendarHere.get(Calendar.MINUTE));
+			classTimeValue.setText(classTime);
+			sharedPreferences.edit().putLong(KEY_TIME, cal.getTimeInMillis()).apply();
+		});
 		// date
 		classDateValue = rootView.findViewById(R.id.classDateValue);
 		classDateValue.setOnClickListener(view -> {
+			// date set listener
 			DatePickerDialog.OnDateSetListener onDateSetListener = (datePicker, year, month, dayOfMonth) -> {
 				// convert returned integer values into a calendar object to pass into the SimpleDateFormat object
 				calendar.set(year, month, dayOfMonth);
-				// Sat. Oct. 21, 2017
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E. MMM. d, yyyy", Locale.US);
-				simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Shanghai"));
-				// update text
-				classDateValue.setText(simpleDateFormat.format(calendar.getTime()));
+				datePublish.onNext(calendar);
 			};
+			// date picker
 			Calendar c = Calendar.getInstance(TimeZone.getDefault());
 			DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
 					onDateSetListener,
@@ -178,12 +244,7 @@ public class NewClassFragment extends Fragment {
 				}
 				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 				calendar.set(Calendar.MINUTE, minute);
-				Calendar calendarHere = Calendar.getInstance(TimeZone.getDefault());
-				calendarHere.setTime(calendar.getTime());
-
-				String classTime = String.format(Locale.ENGLISH, "%02d:%02d CST - %02d:%02d local", hourOfDay, minute, calendarHere.get(Calendar.HOUR_OF_DAY), calendarHere.get(Calendar.MINUTE));
-
-				classTimeValue.setText(classTime);
+				timePublish.onNext(calendar);
 			};
 			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
 			timePickerDialog.show();

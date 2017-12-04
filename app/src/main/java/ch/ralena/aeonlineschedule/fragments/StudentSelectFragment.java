@@ -35,6 +35,7 @@ public class StudentSelectFragment extends Fragment {
 		students = realm.where(Student.class).findAllSorted("name");
 		View view = inflater.inflate(R.layout.fragment_student_select, container, false);
 
+		// text watcher to update student names in RecyclerView
 		studentEdit = view.findViewById(R.id.studentNameText);
 		studentEdit.addTextChangedListener(new TextWatcher() {
 			@Override
@@ -63,6 +64,7 @@ public class StudentSelectFragment extends Fragment {
 		// set up rxjava subscriptions to clicks
 		adapter.asObservableStudent().subscribe(student -> {
 			Toast.makeText(getContext(), student.getName(), Toast.LENGTH_SHORT).show();
+			getFragmentManager().popBackStackImmediate();
 		});
 		adapter.asObservableButton().subscribe(v -> {
 			String name = studentEdit.getText().toString().trim();
