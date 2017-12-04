@@ -81,7 +81,7 @@ public class StudentSelectAdapter extends AEAdapter<Student> {
 									if (student.deleteStudent(Realm.getDefaultInstance())) {
 										notifyDataSetChanged();
 									}else{
-										Snackbar snackbar = Snackbar.make(view, "This student still has classes associated to him/her. Delete all classes?", Snackbar.LENGTH_INDEFINITE);
+										Snackbar snackbar = Snackbar.make(view, "There are classes associated with this student. Delete all classes?", Snackbar.LENGTH_INDEFINITE);
 										snackbar.setAction("Delete", view1 -> {
 											student.deleteStudentAndClasses(Realm.getDefaultInstance());
 											notifyDataSetChanged();
