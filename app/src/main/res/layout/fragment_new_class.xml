@@ -14,12 +14,12 @@
 					android:layout_height="wrap_content"
 					android:orientation="vertical">
 
-		<EditText
-			android:id="@+id/studentNameEdit"
+		<TextView
+			android:id="@+id/studentNameText"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_alignParentTop="true"
-			android:layout_marginBottom="8dp"
+			android:layout_margin="8dp"
 			android:hint="@string/students_name"
 			android:textAlignment="center"
 			android:textSize="24sp"/>
@@ -28,7 +28,7 @@
 			android:id="@+id/classDateLabel"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_below="@id/studentNameEdit"
+			android:layout_below="@id/studentNameText"
 			android:text="@string/class_date"
 			android:textSize="14sp"/>
 

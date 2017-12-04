@@ -66,7 +66,7 @@ public class NewClassFragment extends Fragment {
 					.commit();
 		});
 
-		EditText studentEdit = rootView.findViewById(R.id.studentNameEdit);
+		TextView studentEdit = rootView.findViewById(R.id.studentNameText);
 		studentEdit.setOnClickListener(view -> {
 			StudentSelectFragment fragment = new StudentSelectFragment();
 			getFragmentManager().beginTransaction()
@@ -122,7 +122,7 @@ public class NewClassFragment extends Fragment {
 	 */
 	private void setUpSubmitButton() {
 		// edit texts for student name and notes
-		EditText studentEdit = rootView.findViewById(R.id.studentNameEdit);
+		TextView studentName = rootView.findViewById(R.id.studentNameText);
 		EditText notesEdit = rootView.findViewById(R.id.notesEdit);
 
 		// find button and set up onclick listener
@@ -132,7 +132,7 @@ public class NewClassFragment extends Fragment {
 			realm.executeTransaction(realm -> {
 				// create student object
 				Student student = realm.createObject(Student.class, UUID.randomUUID().toString());
-				student.setName(studentEdit.getText().toString());
+				student.setName(studentName.getText().toString());
 				// create class object
 				ScheduledClass scheduledClass = realm.createObject(ScheduledClass.class, UUID.randomUUID().toString());
 				scheduledClass.setStudent(student);

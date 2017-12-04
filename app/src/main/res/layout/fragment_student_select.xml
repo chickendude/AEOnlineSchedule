@@ -13,7 +13,7 @@
 		android:layout_margin="4dp">
 
 		<EditText
-			android:id="@+id/studentNameEdit"
+			android:id="@+id/studentNameText"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_margin="3dp"

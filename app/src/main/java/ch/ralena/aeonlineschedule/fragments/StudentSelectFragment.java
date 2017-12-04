@@ -35,11 +35,10 @@ public class StudentSelectFragment extends Fragment {
 		students = realm.where(Student.class).findAllSorted("name");
 		View view = inflater.inflate(R.layout.fragment_student_select, container, false);
 
-		studentEdit = view.findViewById(R.id.studentNameEdit);
+		studentEdit = view.findViewById(R.id.studentNameText);
 		studentEdit.addTextChangedListener(new TextWatcher() {
 			@Override
 			public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
 			}
 
 			@Override
