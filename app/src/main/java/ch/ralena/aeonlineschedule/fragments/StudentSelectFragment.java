@@ -69,7 +69,6 @@ public class StudentSelectFragment extends Fragment {
 		// set up rxjava subscriptions to clicks
 		adapter.asObservableStudent().subscribe(student -> {
 			sharedPreferences.edit().putString(NewClassFragment.KEY_STUDENT_ID, student.getId()).apply();
-			Toast.makeText(getContext(), student.getName(), Toast.LENGTH_SHORT).show();
 			getFragmentManager().popBackStackImmediate();
 		});
 		adapter.asObservableButton().subscribe(v -> {
@@ -82,7 +81,6 @@ public class StudentSelectFragment extends Fragment {
 					student.setName(name);
 					sharedPreferences.edit().putString(NewClassFragment.KEY_STUDENT_ID, student.getId()).apply();
 				});
-				Toast.makeText(getContext(), "Creating student!", Toast.LENGTH_SHORT).show();
 				getFragmentManager().popBackStackImmediate();
 			}
 		});

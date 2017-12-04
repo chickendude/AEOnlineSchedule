@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -23,6 +24,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
@@ -120,7 +122,7 @@ public class NewClassFragment extends Fragment {
 			String studentId = sharedPreferences.getString(KEY_STUDENT_ID, "");
 			if (!studentId.isEmpty()) {
 				curStudent = realm.where(Student.class).equalTo("id", studentId).findFirst();
-				if(curStudent != null) {
+				if (curStudent != null) {
 					studentNameText.setText(curStudent.getName());
 				}
 			}
@@ -200,15 +202,23 @@ public class NewClassFragment extends Fragment {
 		// find button and set up onclick listener
 		Button button = rootView.findViewById(R.id.createClassButton);
 		button.setOnClickListener(v -> {
-			// create class
-			realm.executeTransaction(realm -> {
-				// create class object
-				ScheduledClass scheduledClass = realm.createObject(ScheduledClass.class, UUID.randomUUID().toString());
-				scheduledClass.setStudent(curStudent);
-				scheduledClass.setDate(calendar.getTime());
-				scheduledClass.setNotes(notesEdit.getText().toString());
-				getActivity().onBackPressed();
-			});
+			Map<String, ?> sharedMap = sharedPreferences.getAll();
+			if (sharedMap.get(KEY_STUDENT_ID) == null ||
+					sharedMap.get(KEY_DATE) == null ||
+					sharedMap.get(KEY_TIME) == null ||
+					sharedMap.get(KEY_CHECKED_BOX) == null) {
+				Toast.makeText(getContext(), "All fields must be filled in!", Toast.LENGTH_SHORT).show();
+			} else {
+				// create class
+				realm.executeTransaction(realm -> {
+					// create class object
+					ScheduledClass scheduledClass = realm.createObject(ScheduledClass.class, UUID.randomUUID().toString());
+					scheduledClass.setStudent(curStudent);
+					scheduledClass.setDate(calendar.getTime());
+					scheduledClass.setNotes(notesEdit.getText().toString());
+					getActivity().onBackPressed();
+				});
+			}
 		});
 	}
 
