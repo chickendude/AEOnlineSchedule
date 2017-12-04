@@ -16,4 +16,5 @@
 	<string name="length">Length:</string>
 	<string name="class_types">Class Types:</string>
 	<string name="no_scheduled_classes">No scheduled classes!</string>
+	<string name="add_new_student">Add New Student</string>
 </resources>

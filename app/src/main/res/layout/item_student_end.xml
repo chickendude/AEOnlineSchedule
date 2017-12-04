@@ -5,12 +5,14 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
-	<TextView
-		android:id="@+id/studentNameText"
+	<Button
+		android:id="@+id/addStudentButton"
+		style="@style/Widget.AppCompat.Button.Borderless.Colored"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:padding="5dp"
-		android:textSize="20sp"
-		tools:text="Student's Name"/>
+		android:padding="10dp"
+		android:text="@string/add_new_student"
+		android:textAlignment="center"
+		android:textSize="24sp"/>
 
 </android.support.constraint.ConstraintLayout>
