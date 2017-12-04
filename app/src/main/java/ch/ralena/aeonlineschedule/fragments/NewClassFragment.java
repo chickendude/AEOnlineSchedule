@@ -66,6 +66,15 @@ public class NewClassFragment extends Fragment {
 					.commit();
 		});
 
+		EditText studentEdit = rootView.findViewById(R.id.studentNameEdit);
+		studentEdit.setOnClickListener(view -> {
+			StudentSelectFragment fragment = new StudentSelectFragment();
+			getFragmentManager().beginTransaction()
+					.replace(R.id.fragmentContainer, fragment)
+					.addToBackStack(null)
+					.commit();
+		});
+
 
 		loadClassTypes();
 		setUpCalendar();

@@ -11,49 +11,38 @@ import java.util.List;
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 
-public class MyClassesAdapter extends RecyclerView.Adapter<MyClassesAdapter.MyClassesViewHolder> {
+public class MyClassesAdapter extends AEAdapter<ScheduledClass> {
 
 	List<ScheduledClass> scheduledClasses;
 
 	public MyClassesAdapter(List<ScheduledClass> scheduledClasses) {
-		this.scheduledClasses = scheduledClasses;
+		super(scheduledClasses);
 	}
 
 	@Override
-	public MyClassesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+	public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 		View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_my_classes, parent, false);
-		return new MyClassesViewHolder(view);
-	}
+		return new AEViewHolder(view) {
+			TextView studentName;
+			TextView time;
+			TextView date;
+			TextView dayOfWeek;
 
-	@Override
-	public void onBindViewHolder(MyClassesViewHolder holder, int position) {
-		holder.bindView(scheduledClasses.get(position));
-	}
+			@Override
+			void loadViews() {
+				studentName = itemView.findViewById(R.id.studentNameText);
+				time = itemView.findViewById(R.id.timeText);
+				date = itemView.findViewById(R.id.dateText);
+				dayOfWeek = itemView.findViewById(R.id.dayOfWeekText);
+			}
 
-	@Override
-	public int getItemCount() {
-		return scheduledClasses.size();
-	}
-
-	class MyClassesViewHolder extends RecyclerView.ViewHolder {
-		TextView studentName;
-		TextView time;
-		TextView date;
-		TextView dayOfWeek;
-
-		public MyClassesViewHolder(View itemView) {
-			super(itemView);
-			studentName = itemView.findViewById(R.id.studentNameText);
-			time = itemView.findViewById(R.id.timeText);
-			date = itemView.findViewById(R.id.dateText);
-			dayOfWeek = itemView.findViewById(R.id.dayOfWeekText);
-		}
-
-		public void bindView(ScheduledClass scheduledClass) {
-			studentName.setText(scheduledClass.getStudent().getName());
-			date.setText(scheduledClass.getDayOfMonth());
-			dayOfWeek.setText(scheduledClass.getDayOfWeek());
-			time.setText(scheduledClass.getTime());
-		}
+			@Override
+			void bindView(ScheduledClass scheduledClass) {
+				studentName.setText(scheduledClass.getStudent().getName());
+				date.setText(scheduledClass.getDayOfMonth());
+				dayOfWeek.setText(scheduledClass.getDayOfWeek());
+				time.setText(scheduledClass.getTime());
+			}
+		};
 	}
 }
