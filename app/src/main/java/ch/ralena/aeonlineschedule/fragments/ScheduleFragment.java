@@ -1,8 +1,15 @@
 package ch.ralena.aeonlineschedule.fragments;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.ChangeTransform;
+import android.support.transition.Explode;
+import android.support.transition.Fade;
+import android.support.transition.Transition;
+import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +39,7 @@ public class ScheduleFragment extends Fragment {
 	public static final String EXTRA_CLASS_ID = "extra_class_id";
 	List<ScheduledClass> scheduledClasses;
 	ScheduleAdapter adapter;
+	FloatingActionButton fab;
 
 	@Nullable
 	@Override
@@ -44,6 +52,8 @@ public class ScheduleFragment extends Fragment {
 
 		// inflate layout
 		View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+		fab = view.findViewById(R.id.fab);
 
 		// if there are classes, hide the empty message
 		if (scheduledClasses.size() > 0) {
@@ -110,6 +120,35 @@ public class ScheduleFragment extends Fragment {
 		Bundle bundle = new Bundle();
 		bundle.putBoolean(NewClassFragment.EXTRA_IS_NEW, true);
 		fragment.setArguments(bundle);
+
+
+		ChangeTransform changeBounds = new ChangeTransform();
+		changeBounds.addTarget(fab);
+
+		Explode fabExplode = new Explode();
+		fabExplode.addTarget(fab);
+		fabExplode.setDuration(500);
+		TransitionSet curTransition = new TransitionSet();
+		curTransition.addTransition(fabExplode);
+		curTransition.addTransition(new Fade());
+		setExitTransition(curTransition);
+		setReturnTransition(curTransition);
+
+		Explode explode = new Explode();
+		explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+			@Override
+			public Rect onGetEpicenter(@NonNull Transition transition) {
+				Rect rect = new Rect();
+				fab.getGlobalVisibleRect(new Rect());
+				return rect;
+			}
+		});
+		TransitionSet transitionSet = new TransitionSet();
+		transitionSet.addTransition(explode);
+		transitionSet.addTransition(new Fade());
+
+		fragment.setEnterTransition(transitionSet);
+
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentContainer, fragment)
 				.addToBackStack(null)
