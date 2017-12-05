@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.transition.ChangeTransform;
 import android.support.transition.Explode;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
@@ -121,10 +120,7 @@ public class ScheduleFragment extends Fragment {
 		bundle.putBoolean(NewClassFragment.EXTRA_IS_NEW, true);
 		fragment.setArguments(bundle);
 
-
-		ChangeTransform changeBounds = new ChangeTransform();
-		changeBounds.addTarget(fab);
-
+		// for current fragment transition
 		Explode fabExplode = new Explode();
 		fabExplode.addTarget(fab);
 		fabExplode.setDuration(500);
@@ -134,6 +130,7 @@ public class ScheduleFragment extends Fragment {
 		setExitTransition(curTransition);
 		setReturnTransition(curTransition);
 
+		// transition for new fragment
 		Explode explode = new Explode();
 		explode.setEpicenterCallback(new Transition.EpicenterCallback() {
 			@Override
@@ -146,7 +143,6 @@ public class ScheduleFragment extends Fragment {
 		TransitionSet transitionSet = new TransitionSet();
 		transitionSet.addTransition(explode);
 		transitionSet.addTransition(new Fade());
-
 		fragment.setEnterTransition(transitionSet);
 
 		getFragmentManager().beginTransaction()
