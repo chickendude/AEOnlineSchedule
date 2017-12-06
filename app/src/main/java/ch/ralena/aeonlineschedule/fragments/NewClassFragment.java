@@ -94,9 +94,10 @@ public class NewClassFragment extends Fragment {
 		studentNameText = rootView.findViewById(R.id.studentNameText);
 		studentNameText.setOnClickListener(view -> {
 			StudentSelectFragment fragment = new StudentSelectFragment();
-			// set up shared element transition
+			// set up transition
 			fragment.setEnterTransition(new Explode());
 			setExitTransition(new Fade());
+
 			getFragmentManager().beginTransaction()
 					.replace(R.id.fragmentContainer, fragment)
 					.addToBackStack(null)
@@ -288,7 +289,7 @@ public class NewClassFragment extends Fragment {
 					onDateSetListener,
 					c.get(Calendar.YEAR),
 					c.get(Calendar.MONTH),
-					c.get(Calendar.DAY_OF_MONTH));
+					c.get(Calendar.DAY_OF_MONTH) + 1);
 			datePickerDialog.show();
 		});
 
@@ -304,7 +305,7 @@ public class NewClassFragment extends Fragment {
 				calendar.set(Calendar.MINUTE, minute);
 				timePublish.onNext(calendar);
 			};
-			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, 22, calendar.get(Calendar.MINUTE), true);
 			timePickerDialog.show();
 		});
 	}
