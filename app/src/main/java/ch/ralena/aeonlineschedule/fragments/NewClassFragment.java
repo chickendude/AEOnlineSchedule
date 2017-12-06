@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.transition.Explode;
+import android.support.transition.Fade;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -92,6 +94,9 @@ public class NewClassFragment extends Fragment {
 		studentNameText = rootView.findViewById(R.id.studentNameText);
 		studentNameText.setOnClickListener(view -> {
 			StudentSelectFragment fragment = new StudentSelectFragment();
+			// set up shared element transition
+			fragment.setEnterTransition(new Explode());
+			setExitTransition(new Fade());
 			getFragmentManager().beginTransaction()
 					.replace(R.id.fragmentContainer, fragment)
 					.addToBackStack(null)
