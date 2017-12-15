@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.ChangeBounds;
 import android.support.transition.Explode;
 import android.support.transition.Fade;
 import android.support.transition.Transition;
@@ -97,14 +98,21 @@ public class ScheduleFragment extends Fragment {
 		getActivity().setTitle(String.format("Schedule: %s - %s", startDate, endDate));
 	}
 
-	private void viewClassDetail(String classId) {
+	private void viewClassDetail(ScheduleAdapter.StudentIdView idView) {
+		String classId = idView.getId();
 		ClassDetailFragment fragment = new ClassDetailFragment();
 
 		Bundle bundle = new Bundle();
 		bundle.putString(EXTRA_CLASS_ID, classId);
 		fragment.setArguments(bundle);
 
+		fragment.setSharedElementEnterTransition(new ChangeBounds());
+
+
+
 		getFragmentManager().beginTransaction()
+				.addSharedElement(idView.getStudentNameView(), "student_name_transition")
+				.addSharedElement(idView.getDateView(), "student_date_transition")
 				.replace(R.id.fragmentContainer, fragment)
 				.addToBackStack(null)
 				.commit();

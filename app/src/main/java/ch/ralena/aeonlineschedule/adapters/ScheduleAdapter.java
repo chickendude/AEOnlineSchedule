@@ -1,5 +1,6 @@
 package ch.ralena.aeonlineschedule.adapters;
 
+import android.os.Build;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +20,40 @@ import io.reactivex.subjects.PublishSubject;
  * Adapter for the Schedule Fragment recycler view
  */
 public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
-	PublishSubject<String> classPublishSubject = PublishSubject.create();
+	public class StudentIdView {
+		String id;
+		View view;
 
-	public Observable<String> asObservable() {
+		public String getId() {
+			return id;
+		}
+
+		public View getDateView() {
+			TextView dateText =view.findViewById(R.id.dateText);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				dateText.setTransitionName("student_date_transition");
+			}
+			return dateText;
+		}
+
+		public View getStudentNameView() {
+			TextView studentNameText =view.findViewById(R.id.studentNameText);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+				studentNameText.setTransitionName("student_name_transition");
+			}
+			return view.findViewById(R.id.studentNameText);
+		}
+
+		public StudentIdView(String string, View view) {
+			this.id = string;
+			this.view = view;
+
+		}
+	}
+
+	PublishSubject<StudentIdView> classPublishSubject = PublishSubject.create();
+
+	public Observable<StudentIdView> asObservable() {
 		return classPublishSubject;
 	}
 
@@ -51,7 +83,7 @@ public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
 			@Override
 			void bindView(ScheduledClass scheduledClass) {
 				// pass item clicks back to the ScheduleFragment
-				itemView.setOnClickListener(view -> classPublishSubject.onNext(scheduledClass.getId()));
+				itemView.setOnClickListener(view -> classPublishSubject.onNext(new StudentIdView(scheduledClass.getId(), itemView)));
 				String studentName = scheduledClass.getStudent().getName();
 				studentNameText.setText(studentName);
 
