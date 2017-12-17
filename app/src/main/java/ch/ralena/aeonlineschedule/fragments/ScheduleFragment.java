@@ -8,12 +8,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.transition.ChangeBounds;
 import android.support.transition.Explode;
 import android.support.transition.Fade;
+import android.support.transition.Slide;
 import android.support.transition.Transition;
 import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,8 +110,6 @@ public class ScheduleFragment extends Fragment {
 
 		fragment.setSharedElementEnterTransition(new ChangeBounds());
 
-
-
 		getFragmentManager().beginTransaction()
 				.addSharedElement(idView.getStudentNameView(), "student_name_transition")
 				.addSharedElement(idView.getDateView(), "student_date_transition")
@@ -129,11 +129,11 @@ public class ScheduleFragment extends Fragment {
 		fragment.setArguments(bundle);
 
 		// for current fragment transition
-		Explode fabExplode = new Explode();
-		fabExplode.addTarget(fab);
-		fabExplode.setDuration(500);
+		Slide fabSlide = new Slide(Gravity.BOTTOM);
+		fabSlide.addTarget(fab);
+		fabSlide.setDuration(500);
 		TransitionSet curTransition = new TransitionSet();
-		curTransition.addTransition(fabExplode);
+		curTransition.addTransition(fabSlide);
 		curTransition.addTransition(new Fade());
 		setExitTransition(curTransition);
 		setReturnTransition(curTransition);
@@ -149,9 +149,10 @@ public class ScheduleFragment extends Fragment {
 			}
 		});
 		TransitionSet transitionSet = new TransitionSet();
-		transitionSet.addTransition(explode);
+		transitionSet.addTransition(new Slide(Gravity.BOTTOM));
 		transitionSet.addTransition(new Fade());
 		fragment.setEnterTransition(transitionSet);
+		fragment.setReturnTransition(new Fade());
 
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentContainer, fragment)
