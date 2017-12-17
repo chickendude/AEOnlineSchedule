@@ -1,5 +1,6 @@
 package ch.ralena.aeonlineschedule.objects;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -12,6 +13,10 @@ public class Student extends RealmObject {
 
 	private String name;
 	private String notes;
+
+	public String getId() {
+		return id;
+	}
 
 	public String getName() {
 		return name;
@@ -27,5 +32,21 @@ public class Student extends RealmObject {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public boolean deleteStudent(Realm realm) {
+		if (realm.where(ScheduledClass.class).equalTo("student.id", id).count() > 0)
+			return false;
+		else {
+			realm.executeTransaction(r -> deleteFromRealm());
+			return true;
+		}
+	}
+
+	public void deleteStudentAndClasses(Realm realm) {
+		realm.executeTransaction(r -> {
+			realm.where(ScheduledClass.class).equalTo("student.id", id).findAll().deleteAllFromRealm();
+			deleteFromRealm();
+		});
 	}
 }

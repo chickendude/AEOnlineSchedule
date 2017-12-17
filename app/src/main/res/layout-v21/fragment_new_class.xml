@@ -22,7 +22,8 @@
 			android:layout_margin="8dp"
 			android:hint="@string/students_name"
 			android:textAlignment="center"
-			android:textSize="24sp"/>
+			android:textSize="24sp"
+			android:transitionName="student_name_transition"/>
 
 		<TextView
 			android:id="@+id/classDateLabel"

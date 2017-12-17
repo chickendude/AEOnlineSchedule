@@ -1,8 +1,15 @@
 package ch.ralena.aeonlineschedule.fragments;
 
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.ChangeBounds;
+import android.support.transition.Explode;
+import android.support.transition.Fade;
+import android.support.transition.Transition;
+import android.support.transition.TransitionSet;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -28,8 +35,11 @@ import io.realm.Realm;
  * You can also add new schedules by clicking the FAB button.
  */
 public class ScheduleFragment extends Fragment {
+	private static final String TAG = ScheduleFragment.class.getSimpleName();
+	public static final String EXTRA_CLASS_ID = "extra_class_id";
 	List<ScheduledClass> scheduledClasses;
 	ScheduleAdapter adapter;
+	FloatingActionButton fab;
 
 	@Nullable
 	@Override
@@ -42,6 +52,8 @@ public class ScheduleFragment extends Fragment {
 
 		// inflate layout
 		View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+		fab = view.findViewById(R.id.fab);
 
 		// if there are classes, hide the empty message
 		if (scheduledClasses.size() > 0) {
@@ -58,6 +70,8 @@ public class ScheduleFragment extends Fragment {
 		adapter = new ScheduleAdapter(scheduledClasses);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+		// click on recyclerview item loads that class's detail page
+		adapter.asObservable().subscribe(this::viewClassDetail);
 
 		// set up swipe refresh layout
 		SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
@@ -74,7 +88,7 @@ public class ScheduleFragment extends Fragment {
 		// get current date
 		Calendar calendar = Calendar.getInstance();
 		// create our date format
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM d", Locale.ENGLISH);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMM. d", Locale.ENGLISH);
 		// get the starting date
 		String startDate = simpleDateFormat.format(calendar.getTime());
 		// move one week ahead for end date
@@ -84,11 +98,61 @@ public class ScheduleFragment extends Fragment {
 		getActivity().setTitle(String.format("Schedule: %s - %s", startDate, endDate));
 	}
 
+	private void viewClassDetail(ScheduleAdapter.StudentIdView idView) {
+		String classId = idView.getId();
+		ClassDetailFragment fragment = new ClassDetailFragment();
+
+		Bundle bundle = new Bundle();
+		bundle.putString(EXTRA_CLASS_ID, classId);
+		fragment.setArguments(bundle);
+
+		fragment.setSharedElementEnterTransition(new ChangeBounds());
+
+
+
+		getFragmentManager().beginTransaction()
+				.addSharedElement(idView.getStudentNameView(), "student_name_transition")
+				.addSharedElement(idView.getDateView(), "student_date_transition")
+				.replace(R.id.fragmentContainer, fragment)
+				.addToBackStack(null)
+				.commit();
+
+	}
+
 	/**
 	 * Loads the add new class fragment.
 	 */
 	private void addNewClass() {
 		NewClassFragment fragment = new NewClassFragment();
+		Bundle bundle = new Bundle();
+		bundle.putBoolean(NewClassFragment.EXTRA_IS_NEW, true);
+		fragment.setArguments(bundle);
+
+		// for current fragment transition
+		Explode fabExplode = new Explode();
+		fabExplode.addTarget(fab);
+		fabExplode.setDuration(500);
+		TransitionSet curTransition = new TransitionSet();
+		curTransition.addTransition(fabExplode);
+		curTransition.addTransition(new Fade());
+		setExitTransition(curTransition);
+		setReturnTransition(curTransition);
+
+		// transition for new fragment
+		Explode explode = new Explode();
+		explode.setEpicenterCallback(new Transition.EpicenterCallback() {
+			@Override
+			public Rect onGetEpicenter(@NonNull Transition transition) {
+				Rect rect = new Rect();
+				fab.getGlobalVisibleRect(new Rect());
+				return rect;
+			}
+		});
+		TransitionSet transitionSet = new TransitionSet();
+		transitionSet.addTransition(explode);
+		transitionSet.addTransition(new Fade());
+		fragment.setEnterTransition(transitionSet);
+
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentContainer, fragment)
 				.addToBackStack(null)
