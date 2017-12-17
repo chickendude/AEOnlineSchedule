@@ -10,6 +10,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import io.realm.Realm;
@@ -49,9 +52,15 @@ public class ClassDetailFragment extends Fragment {
 		});
 
 		studentName.setText(scheduledClass.getStudent().getName());
+		// set up date
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, at hh:mm a", Locale.ENGLISH);
+		String dateAndTime = sdf.format(scheduledClass.getDate());
+		classTime.setText(dateAndTime);
+		// load notes
 		String notes = !scheduledClass.getNotes().equals("") ?
 				scheduledClass.getNotes() : "No notes for this class.";
 		classNotes.setText(notes);
+		// load class summary
 		String summary = scheduledClass.getSummary() == null || scheduledClass.getSummary().isEmpty() ?
 						"No summary for this class yet." : scheduledClass.getSummary();
 		classSummary.setText(summary);
