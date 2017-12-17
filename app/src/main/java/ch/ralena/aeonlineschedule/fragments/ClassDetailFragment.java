@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +13,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Locale;
 
 import ch.ralena.aeonlineschedule.R;
+import ch.ralena.aeonlineschedule.adapters.ClassDetailAdapter;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import io.realm.Realm;
+import io.realm.Sort;
 
 import static ch.ralena.aeonlineschedule.fragments.ScheduleFragment.EXTRA_CLASS_ID;
 
@@ -39,6 +44,13 @@ public class ClassDetailFragment extends Fragment {
 		TextView classTime = view.findViewById(R.id.classTimeLabel);
 		TextView classNotes = view.findViewById(R.id.classNotesLabel);
 		TextView classSummary = view.findViewById(R.id.classSummaryLabel);
+		// recycler view
+		List<ScheduledClass> classes = realm.where(ScheduledClass.class).equalTo("student.id", scheduledClass.getStudent().getId()).findAllSorted("date", Sort.DESCENDING);
+		RecyclerView recyclerView = view.findViewById(R.id.classRecyclerView);
+		ClassDetailAdapter adapter = new ClassDetailAdapter(classes);
+		recyclerView.setAdapter(adapter);
+		recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+		// delete button
 		Button deleteButton = view.findViewById(R.id.deleteButton);
 		deleteButton.setOnClickListener(v -> {
 			Snackbar snackbar = Snackbar.make(v, "Are you sure you want to delete? Cannot be undone.", Snackbar.LENGTH_INDEFINITE);
@@ -53,7 +65,7 @@ public class ClassDetailFragment extends Fragment {
 
 		studentName.setText(scheduledClass.getStudent().getName());
 		// set up date
-		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, at hh:mm a", Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, hh:mm a", Locale.ENGLISH);
 		String dateAndTime = sdf.format(scheduledClass.getDate());
 		classTime.setText(dateAndTime);
 		// load notes

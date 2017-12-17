@@ -76,6 +76,13 @@
 		android:layout_marginTop="5dp"
 		android:background="@color/colorPrimary"/>
 
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/all_student_classes"
+		android:textAlignment="center"
+		android:textSize="20sp"/>
+
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/classRecyclerView"
 		android:layout_width="match_parent"
