@@ -18,6 +18,7 @@ import java.util.Locale;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.adapters.ClassDetailAdapter;
+import ch.ralena.aeonlineschedule.objects.ClassType;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import io.realm.Realm;
 import io.realm.Sort;
@@ -38,9 +39,9 @@ public class ClassDetailFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_class_detail, container, false);
 
-
 		// find views
 		TextView studentName = view.findViewById(R.id.studentNameLabel);
+		TextView classTypeAndPrice = view.findViewById(R.id.classTypeAndPriceLabel);
 		TextView classTime = view.findViewById(R.id.classTimeLabel);
 		TextView classNotes = view.findViewById(R.id.classNotesLabel);
 		TextView classSummary = view.findViewById(R.id.classSummaryLabel);
@@ -76,6 +77,12 @@ public class ClassDetailFragment extends Fragment {
 		String summary = scheduledClass.getSummary() == null || scheduledClass.getSummary().isEmpty() ?
 						"No summary for this class yet." : scheduledClass.getSummary();
 		classSummary.setText(summary);
+		// class price and type
+
+		ClassType cType = scheduledClass.getClassType();
+
+		String classType = String.format(Locale.US, "%s - $%.2f", scheduledClass.getClassType().getName(), scheduledClass.getClassType().getWage());
+		classTypeAndPrice.setText(classType);
 
 		return view;
 	}

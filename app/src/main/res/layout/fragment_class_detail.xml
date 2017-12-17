@@ -15,9 +15,17 @@
 		android:layout_marginStart="8dp"
 		android:layout_marginTop="8dp"
 		android:textAlignment="center"
-		android:textSize="20sp"
+		android:textSize="22sp"
 		android:transitionName="student_name_transition"
 		tools:text="Student name"/>
+
+	<TextView
+		android:id="@+id/classTypeAndPriceLabel"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:textAlignment="center"
+		android:textSize="20sp"
+		tools:text="GE - $17"/>
 
 	<TextView
 		android:id="@+id/classTimeLabel"
