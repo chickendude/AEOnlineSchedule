@@ -29,6 +29,12 @@ public class ClassDetailFragment extends Fragment {
 	private Realm realm;
 	private ScheduledClass scheduledClass;
 
+	TextView studentName;
+	TextView classTypeAndPrice;
+	TextView classTime;
+	TextView classNotes;
+	TextView classSummary;
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,17 +46,22 @@ public class ClassDetailFragment extends Fragment {
 		View view = inflater.inflate(R.layout.fragment_class_detail, container, false);
 
 		// find views
-		TextView studentName = view.findViewById(R.id.studentNameLabel);
-		TextView classTypeAndPrice = view.findViewById(R.id.classTypeAndPriceLabel);
-		TextView classTime = view.findViewById(R.id.classTimeLabel);
-		TextView classNotes = view.findViewById(R.id.classNotesLabel);
-		TextView classSummary = view.findViewById(R.id.classSummaryLabel);
+		studentName = view.findViewById(R.id.studentNameLabel);
+		classTypeAndPrice = view.findViewById(R.id.classTypeAndPriceLabel);
+		classTime = view.findViewById(R.id.classTimeLabel);
+		classNotes = view.findViewById(R.id.classNotesLabel);
+		classSummary = view.findViewById(R.id.classSummaryLabel);
 		// recycler view
 		List<ScheduledClass> classes = realm.where(ScheduledClass.class).equalTo("student.id", scheduledClass.getStudent().getId()).findAllSorted("date", Sort.DESCENDING);
 		RecyclerView recyclerView = view.findViewById(R.id.classRecyclerView);
 		ClassDetailAdapter adapter = new ClassDetailAdapter(classes);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+		// onclick listener for recyclerview adapter
+		adapter.asObservable().subscribe(schedClass -> {
+			scheduledClass = schedClass;
+			loadClassInformation();
+		});
 		// delete button
 		Button deleteButton = view.findViewById(R.id.deleteButton);
 		deleteButton.setOnClickListener(v -> {
@@ -64,6 +75,12 @@ public class ClassDetailFragment extends Fragment {
 			snackbar.show();
 		});
 
+		loadClassInformation();
+
+		return view;
+	}
+
+	private void loadClassInformation() {
 		studentName.setText(scheduledClass.getStudent().getName());
 		// set up date
 		SimpleDateFormat sdf = new SimpleDateFormat("EEEE, MMMM d, hh:mm a", Locale.ENGLISH);
@@ -78,12 +95,8 @@ public class ClassDetailFragment extends Fragment {
 						"No summary for this class yet." : scheduledClass.getSummary();
 		classSummary.setText(summary);
 		// class price and type
-
 		ClassType cType = scheduledClass.getClassType();
-
-		String classType = String.format(Locale.US, "%s - $%.2f", scheduledClass.getClassType().getName(), scheduledClass.getClassType().getWage());
+		String classType = String.format(Locale.US, "%s - $%.2f", cType.getName(), cType.getWage());
 		classTypeAndPrice.setText(classType);
-
-		return view;
 	}
 }

@@ -10,9 +10,16 @@ import java.util.List;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
+import io.reactivex.subjects.PublishSubject;
 
 public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.ClassViewHolder> {
 	private List<ScheduledClass> classes;
+
+	PublishSubject<ScheduledClass> classSubject = PublishSubject.create();
+
+	public PublishSubject<ScheduledClass> asObservable() {
+		return classSubject;
+	}
 
 	public ClassDetailAdapter(List<ScheduledClass> classes) {
 		this.classes = classes;
@@ -45,6 +52,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 		}
 
 		void bindView(ScheduledClass scheduledClass) {
+			itemView.setOnClickListener(view -> classSubject.onNext(scheduledClass));
 			String monthAndDate = String.format("%s. %s", scheduledClass.getMonth(), scheduledClass.getDayOfMonth());
 			monthDate.setText(monthAndDate);
 			classTime.setText(scheduledClass.getTime());
