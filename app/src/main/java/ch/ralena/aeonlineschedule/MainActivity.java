@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 
 import ch.ralena.aeonlineschedule.fragments.MyClassesFragment;
+import ch.ralena.aeonlineschedule.fragments.OptionsFragment;
 import ch.ralena.aeonlineschedule.fragments.ScheduleFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 					break;
 				case R.id.menu_invoice:
 					fragment = new ScheduleFragment();
+					break;
+				case R.id.menu_options:
+					fragment = new OptionsFragment();
 					break;
 			}
 			// if a proper press was registered, load that fragment
