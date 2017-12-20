@@ -6,12 +6,8 @@
 
 		<EditTextPreference
 			android:defaultValue="15"
-			android:key="edit_text_preference_1"
+			android:key="pref_pay_rate"
 			android:inputType="numberDecimal"
-			android:digits="0123456789"
-			android:numeric="decimal"
-			android:selectAllOnFocus="true"
-			android:singleLine="true"
 			android:title="Default Pay Rate"
 			android:contentDescription="Default pay rate when adding a new class type."/>
 		<EditTextPreference
