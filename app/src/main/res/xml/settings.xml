@@ -4,37 +4,40 @@
 	<PreferenceCategory
 		android:title="Class Creation">
 
-		<EditTextPreference
-			android:defaultValue="15"
-			android:key="pref_pay_rate"
+		<ch.ralena.aeonlineschedule.components.EditDecimalPreference
+			android:contentDescription="Default pay rate when adding a new class type."
+			android:defaultValue="15.00"
 			android:inputType="numberDecimal"
-			android:title="Default Pay Rate"
-			android:contentDescription="Default pay rate when adding a new class type."/>
-		<EditTextPreference
+			android:key="pref_pay_rate"
+			android:summary="%s"
+			android:title="Default Pay Rate"/>
+		<ListPreference
 			android:defaultValue="Default value"
-			android:key="edit_text_preference_2"
-			android:selectAllOnFocus="true"
-			android:singleLine="true"
+			android:entries="@array/default_hour"
+			android:entryValues="@array/default_hour"
+			android:key="pref_default_hour"
+			android:summary="%s"
 			android:title="Default Class Time"/>
 		<ListPreference
 			android:defaultValue="1"
 			android:entries="@array/default_day"
 			android:entryValues="@array/default_day"
 			android:key="list_preference_1"
+			android:summary="%s"
 			android:title="Default Class Day"/>
 	</PreferenceCategory>
 	<PreferenceCategory
 		android:title="Reminders">
-
 		<SwitchPreference
 			android:defaultValue="false"
 			android:key="switch_preference_1"
 			android:title="Class Alert"/>
-		<EditTextPreference
+		<ListPreference
 			android:defaultValue="Default value"
-			android:key="edit_text_preference_3"
-			android:selectAllOnFocus="true"
-			android:singleLine="true"
+			android:entries="@array/time_in_advance"
+			android:entryValues="@array/time_in_advance"
+			android:key="pref_time_in_advance"
+			android:summary="%s"
 			android:title="Time in Advance"/>
 	</PreferenceCategory>
 </PreferenceScreen>

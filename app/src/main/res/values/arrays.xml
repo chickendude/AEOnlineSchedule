@@ -2,7 +2,43 @@
 <resources>
 	<string-array name="default_day">
 		<item>Today</item>
-		<item>Tomorrow</item>
+		<item>+1 day</item>
 		<item>+2 days</item>
+		<item>+3 days</item>
+	</string-array>
+	<string-array name="default_hour">
+		<item>0:00 AM</item>
+		<item>1:00 AM</item>
+		<item>2:00 AM</item>
+		<item>3:00 AM</item>
+		<item>4:00 AM</item>
+		<item>5:00 AM</item>
+		<item>6:00 AM</item>
+		<item>7:00 AM</item>
+		<item>8:00 AM</item>
+		<item>9:00 AM</item>
+		<item>10:00 AM</item>
+		<item>11:00 AM</item>
+		<item>12:00 PM</item>
+		<item>13:00 PM</item>
+		<item>14:00 PM</item>
+		<item>15:00 PM</item>
+		<item>16:00 PM</item>
+		<item>17:00 PM</item>
+		<item>18:00 PM</item>
+		<item>19:00 PM</item>
+		<item>20:00 PM</item>
+		<item>21:00 PM</item>
+		<item>22:00 PM</item>
+		<item>23:00 PM</item>
+	</string-array>
+	<string-array name="time_in_advance">
+		<item>0 minutes</item>
+		<item>5 minutes</item>
+		<item>10 minutes</item>
+		<item>20 minutes</item>
+		<item>30 minutes</item>
+		<item>1 hour</item>
+		<item>2 hours</item>
 	</string-array>
 </resources>
