@@ -3,7 +3,6 @@ package ch.ralena.aeonlineschedule.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.transition.ChangeBounds;
 import android.support.transition.Slide;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -89,7 +88,6 @@ public class ScheduleFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		Log.d(TAG, "onStart");
 		// get current date
 		Calendar calendar = Calendar.getInstance();
 		// create our date format
@@ -103,19 +101,15 @@ public class ScheduleFragment extends Fragment {
 		getActivity().setTitle(String.format("Schedule: %s - %s", startDate, endDate));
 	}
 
-	private void viewClassDetail(ScheduleAdapter.StudentIdView idView) {
-		String classId = idView.getId();
+	private void viewClassDetail(ScheduledClass scheduledClass) {
+		String classId = scheduledClass.getId();
 		ClassDetailFragment fragment = new ClassDetailFragment();
 
 		Bundle bundle = new Bundle();
 		bundle.putString(EXTRA_CLASS_ID, classId);
 		fragment.setArguments(bundle);
 
-		fragment.setSharedElementEnterTransition(new ChangeBounds());
-
 		getFragmentManager().beginTransaction()
-				.addSharedElement(idView.getStudentNameView(), "student_name_transition")
-				.addSharedElement(idView.getDateView(), "student_date_transition")
 				.replace(R.id.fragmentContainer, fragment)
 				.addToBackStack(null)
 				.commit();

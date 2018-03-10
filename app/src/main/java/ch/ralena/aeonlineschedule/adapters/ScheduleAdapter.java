@@ -1,6 +1,5 @@
 package ch.ralena.aeonlineschedule.adapters;
 
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,45 +20,9 @@ import io.reactivex.subjects.PublishSubject;
  * Adapter for the Schedule Fragment Recycler View.
  */
 public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
-	/**
-	 * Returns an object that contains both the adapter view and the class id.
-	 * <p>
-	 * Now we can subscribe to the adapter and publish our clicks back.
-	 */
-	public class StudentIdView {
-		String id;
-		View view;
+	PublishSubject<ScheduledClass> classPublishSubject = PublishSubject.create();
 
-		public String getId() {
-			return id;
-		}
-
-		public View getDateView() {
-			TextView dateText =view.findViewById(R.id.dateText);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-				dateText.setTransitionName("student_date_transition");
-			}
-			return dateText;
-		}
-
-		public View getStudentNameView() {
-			TextView studentNameText =view.findViewById(R.id.studentNameText);
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-				studentNameText.setTransitionName("student_name_transition");
-			}
-			return view.findViewById(R.id.studentNameText);
-		}
-
-		public StudentIdView(String string, View view) {
-			this.id = string;
-			this.view = view;
-
-		}
-	}
-
-	PublishSubject<StudentIdView> classPublishSubject = PublishSubject.create();
-
-	public Observable<StudentIdView> asObservable() {
+	public Observable<ScheduledClass> asObservable() {
 		return classPublishSubject;
 	}
 
@@ -89,7 +52,7 @@ public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
 			@Override
 			void bindView(ScheduledClass scheduledClass) {
 				// pass item clicks back to the ScheduleFragment
-				itemView.setOnClickListener(view -> classPublishSubject.onNext(new StudentIdView(scheduledClass.getId(), itemView)));
+				itemView.setOnClickListener(view -> classPublishSubject.onNext(scheduledClass));
 
 				// check if class has started/finished or if it is a future class
 				int classLength = scheduledClass.getClassType().getNumMinutes() * 60 * 1000;
