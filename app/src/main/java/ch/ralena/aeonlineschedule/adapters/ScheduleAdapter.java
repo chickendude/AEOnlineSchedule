@@ -17,9 +17,14 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 
 /**
- * Adapter for the Schedule Fragment recycler view
+ * Adapter for the Schedule Fragment Recycler View.
  */
 public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
+	/**
+	 * Returns an object that contains both the adapter view and the class id.
+	 * <p>
+	 * Now we can subscribe to the adapter and publish our clicks back.
+	 */
 	public class StudentIdView {
 		String id;
 		View view;
@@ -84,6 +89,11 @@ public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
 			void bindView(ScheduledClass scheduledClass) {
 				// pass item clicks back to the ScheduleFragment
 				itemView.setOnClickListener(view -> classPublishSubject.onNext(new StudentIdView(scheduledClass.getId(), itemView)));
+
+				// check if class has started/finished or if it is a future class
+//				int classLength = scheduledClass.getClassType().getNumMinutes() * 60 * 1000;
+
+
 				String studentName = scheduledClass.getStudent().getName();
 				studentNameText.setText(studentName);
 

@@ -46,7 +46,7 @@ public class ScheduleFragment extends Fragment {
 		// load data
 		Realm realm = Realm.getDefaultInstance();
 
-		Date date = new Date();
+		Date date = new Date(System.currentTimeMillis() - 60 * 60 * 1000);
 		scheduledClasses = realm.where(ScheduledClass.class).greaterThan("date", date).findAllSorted("date");
 
 		// inflate layout
@@ -84,7 +84,6 @@ public class ScheduleFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		Log.d(TAG, "onResume");
 	}
 
 	@Override
