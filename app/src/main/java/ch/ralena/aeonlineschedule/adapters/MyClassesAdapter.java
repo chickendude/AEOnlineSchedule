@@ -41,6 +41,7 @@ public class MyClassesAdapter extends AEAdapter<ScheduledClass> {
 			@Override
 			void bindView(ScheduledClass scheduledClass) {
 				int position = objectsList.indexOf(scheduledClass);
+				monthName.setVisibility(View.GONE);
 				if (position == 0) {
 					Calendar calendar = Calendar.getInstance();
 					calendar.setTime(scheduledClass.getDate());
