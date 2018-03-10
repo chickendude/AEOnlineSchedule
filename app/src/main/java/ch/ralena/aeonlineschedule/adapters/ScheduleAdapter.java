@@ -92,7 +92,7 @@ public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
 				String dayOfMonth = scheduledClass.getDayOfMonth();
 				String time = scheduledClass.getTime();
 
-				// calculate the time left until class starts
+				// calculate the classTime left until class starts
 				Long timeDifference = scheduledClass.getDate().getTime() - new Date().getTime();
 				int minutes = (int) (timeDifference % 3600000) / 60000;
 				int hours = (int) (timeDifference / 3600000);

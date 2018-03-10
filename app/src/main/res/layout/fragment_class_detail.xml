@@ -7,17 +7,35 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
-	<TextView
-		android:id="@+id/studentNameLabel"
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginEnd="8dp"
-		android:layout_marginStart="8dp"
-		android:layout_marginTop="8dp"
-		android:textAlignment="center"
-		android:textSize="20sp"
-		android:transitionName="student_name_transition"
-		tools:text="Student name"/>
+		android:gravity="center"
+		android:orientation="horizontal">
+
+		<TextView
+			android:id="@+id/studentNameLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAlignment="center"
+			android:textSize="22sp"
+			android:transitionName="student_name_transition"
+			tools:text="Student name"/>
+
+		<TextView
+			android:textSize="20sp"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text=" - "/>
+
+		<TextView
+			android:id="@+id/classTypeAndPriceLabel"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:textAlignment="center"
+			android:textSize="18sp"
+			tools:text="GE - $17"/>
+	</LinearLayout>
 
 	<TextView
 		android:id="@+id/classTimeLabel"
@@ -75,6 +93,13 @@
 		android:layout_marginRight="40dp"
 		android:layout_marginTop="5dp"
 		android:background="@color/colorPrimary"/>
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="@string/past_classes"
+		android:textAlignment="center"
+		android:textSize="20sp"/>
 
 	<android.support.v7.widget.RecyclerView
 		android:id="@+id/classRecyclerView"

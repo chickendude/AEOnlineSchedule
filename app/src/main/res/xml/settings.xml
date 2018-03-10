@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceCategory
+		android:title="Class Creation">
+
+		<ch.ralena.aeonlineschedule.components.EditDecimalPreference
+			android:contentDescription="Default pay rate when adding a new class type."
+			android:defaultValue="15.00"
+			android:inputType="numberDecimal"
+			android:key="pref_pay_rate"
+			android:summary="%s"
+			android:title="Default Pay Rate"/>
+		<ListPreference
+			android:defaultValue="Default value"
+			android:entries="@array/default_hour"
+			android:entryValues="@array/default_hour"
+			android:key="pref_default_hour"
+			android:summary="%s"
+			android:title="Default Class Time"/>
+		<ListPreference
+			android:defaultValue="1"
+			android:entries="@array/default_day"
+			android:entryValues="@array/default_day"
+			android:key="list_preference_1"
+			android:summary="%s"
+			android:title="Default Class Day"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Reminders">
+		<SwitchPreference
+			android:defaultValue="false"
+			android:key="switch_preference_1"
+			android:title="Class Alert"/>
+		<ListPreference
+			android:defaultValue="Default value"
+			android:entries="@array/time_in_advance"
+			android:entryValues="@array/time_in_advance"
+			android:key="pref_time_in_advance"
+			android:summary="%s"
+			android:title="Time in Advance"/>
+	</PreferenceCategory>
+</PreferenceScreen>

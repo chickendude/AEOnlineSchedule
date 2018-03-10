@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:layout_margin="2dp">
+
+	<RelativeLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:tools="http://schemas.android.com/tools"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal"
+		android:layout_margin="4dp">
+
+		<TextView
+			android:id="@+id/monthDateValue"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			tools:text="Dec. 31"/>
+
+		<TextView
+			android:id="@+id/classTimeValue"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/monthDateValue"
+			tools:text="10:00 AM"/>
+
+	</RelativeLayout>
+</android.support.v7.widget.CardView>

@@ -5,6 +5,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.Explode;
 import android.support.transition.Fade;
@@ -65,10 +66,11 @@ public class NewClassFragment extends Fragment {
 	PublishSubject<Calendar> datePublish = PublishSubject.create();
 	PublishSubject<Calendar> timePublish = PublishSubject.create();
 	PublishSubject<Integer> checkPublish = PublishSubject.create();
+	ClassType classType;
 
 	@Nullable
 	@Override
-	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+	public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		// set bar title
 		getActivity().setTitle("Add new Class");
 
@@ -167,6 +169,7 @@ public class NewClassFragment extends Fragment {
 			for (CheckBox classTypeBox : classTypeBoxes) {
 				classTypeBox.setChecked(false);
 			}
+			classType = classTypes.get(id);
 			classTypeBoxes.get(id).setChecked(true);
 			sharedPreferences.edit().putInt(KEY_CHECKED_BOX, id).apply();
 		});
@@ -237,6 +240,7 @@ public class NewClassFragment extends Fragment {
 					// create class object
 					ScheduledClass scheduledClass = realm.createObject(ScheduledClass.class, UUID.randomUUID().toString());
 					scheduledClass.setStudent(curStudent);
+					scheduledClass.setClassType(classType);
 					scheduledClass.setDate(calendar.getTime());
 					scheduledClass.setNotes(notesEdit.getText().toString());
 					getActivity().onBackPressed();

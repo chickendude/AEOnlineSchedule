@@ -1,19 +1,16 @@
 package ch.ralena.aeonlineschedule.fragments;
 
-import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.transition.ChangeBounds;
-import android.support.transition.Explode;
-import android.support.transition.Fade;
-import android.support.transition.Transition;
-import android.support.transition.TransitionSet;
+import android.support.transition.Slide;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +41,8 @@ public class ScheduleFragment extends Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+		Log.d(TAG, "onCreate");
+
 		// load data
 		Realm realm = Realm.getDefaultInstance();
 
@@ -83,8 +82,15 @@ public class ScheduleFragment extends Fragment {
 	}
 
 	@Override
+	public void onResume() {
+		super.onResume();
+		Log.d(TAG, "onResume");
+	}
+
+	@Override
 	public void onStart() {
 		super.onStart();
+		Log.d(TAG, "onStart");
 		// get current date
 		Calendar calendar = Calendar.getInstance();
 		// create our date format
@@ -108,8 +114,6 @@ public class ScheduleFragment extends Fragment {
 
 		fragment.setSharedElementEnterTransition(new ChangeBounds());
 
-
-
 		getFragmentManager().beginTransaction()
 				.addSharedElement(idView.getStudentNameView(), "student_name_transition")
 				.addSharedElement(idView.getDateView(), "student_date_transition")
@@ -125,33 +129,16 @@ public class ScheduleFragment extends Fragment {
 	private void addNewClass() {
 		NewClassFragment fragment = new NewClassFragment();
 		Bundle bundle = new Bundle();
+		// let new class fragment know we are loading it for the first time.
 		bundle.putBoolean(NewClassFragment.EXTRA_IS_NEW, true);
 		fragment.setArguments(bundle);
 
-		// for current fragment transition
-		Explode fabExplode = new Explode();
-		fabExplode.addTarget(fab);
-		fabExplode.setDuration(500);
-		TransitionSet curTransition = new TransitionSet();
-		curTransition.addTransition(fabExplode);
-		curTransition.addTransition(new Fade());
-		setExitTransition(curTransition);
-		setReturnTransition(curTransition);
-
+		// hide fab because it looks a little weird scrolling
+		fab.setVisibility(View.INVISIBLE);
+		// set up schedule exit transition
+		setExitTransition(new Slide(Gravity.TOP));
 		// transition for new fragment
-		Explode explode = new Explode();
-		explode.setEpicenterCallback(new Transition.EpicenterCallback() {
-			@Override
-			public Rect onGetEpicenter(@NonNull Transition transition) {
-				Rect rect = new Rect();
-				fab.getGlobalVisibleRect(new Rect());
-				return rect;
-			}
-		});
-		TransitionSet transitionSet = new TransitionSet();
-		transitionSet.addTransition(explode);
-		transitionSet.addTransition(new Fade());
-		fragment.setEnterTransition(transitionSet);
+		fragment.setEnterTransition(new Slide(Gravity.BOTTOM));
 
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentContainer, fragment)
