@@ -53,7 +53,7 @@ public class ClassDetailAdapter extends RecyclerView.Adapter<ClassDetailAdapter.
 
 		void bindView(ScheduledClass scheduledClass) {
 			itemView.setOnClickListener(view -> classSubject.onNext(scheduledClass));
-			String monthAndDate = String.format("%s. %s", scheduledClass.getMonth(), scheduledClass.getDayOfMonth());
+			String monthAndDate = String.format("%s. %s", scheduledClass.getMonthShort(), scheduledClass.getDayOfMonth());
 			monthDate.setText(monthAndDate);
 			classTime.setText(scheduledClass.getTime());
 		}
