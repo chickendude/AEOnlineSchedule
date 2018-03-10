@@ -1,6 +1,7 @@
 package ch.ralena.aeonlineschedule.adapters;
 
 import android.os.Build;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,7 +92,29 @@ public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
 				itemView.setOnClickListener(view -> classPublishSubject.onNext(new StudentIdView(scheduledClass.getId(), itemView)));
 
 				// check if class has started/finished or if it is a future class
-//				int classLength = scheduledClass.getClassType().getNumMinutes() * 60 * 1000;
+				int classLength = scheduledClass.getClassType().getNumMinutes() * 60 * 1000;
+				long classTime = scheduledClass.getDate().getTime();
+				long curTime = System.currentTimeMillis();
+				// show correct colors depending on the progress of the class (in progress, done, future)
+				if (classTime < curTime && classTime + classLength > curTime) {
+					studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+					dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+					dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+					timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+					hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+				} else if (classTime > curTime) {
+					studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+					dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+					dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+					timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+					hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
+				} else {
+					studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+					dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+					dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+					timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+					hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+				}
 
 
 				String studentName = scheduledClass.getStudent().getName();
