@@ -50,17 +50,32 @@ public class ClassDetailFragment extends Fragment {
 		classTime = view.findViewById(R.id.classTimeLabel);
 		classNotes = view.findViewById(R.id.classNotesLabel);
 		classSummary = view.findViewById(R.id.classSummaryLabel);
+
 		// recycler view
 		List<ScheduledClass> classes = realm.where(ScheduledClass.class).equalTo("student.id", scheduledClass.getStudent().getId()).findAllSorted("date", Sort.DESCENDING);
 		RecyclerView recyclerView = view.findViewById(R.id.classRecyclerView);
 		ClassDetailAdapter adapter = new ClassDetailAdapter(classes);
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 5));
+
 		// onclick listener for recyclerview adapter
 		adapter.asObservable().subscribe(schedClass -> {
 			scheduledClass = schedClass;
 			loadClassInformation();
 		});
+
+		// onclick listener for student name to edit student
+		studentName.setOnClickListener(v -> {
+			EditStudentFragment fragment = new EditStudentFragment();
+			Bundle bundle = new Bundle();
+			bundle.putString(EditStudentFragment.EXTRA_STUDENT_ID, scheduledClass.getStudent().getId());
+			fragment.setArguments(bundle);
+			getFragmentManager().beginTransaction()
+					.replace(R.id.fragmentContainer, fragment)
+					.addToBackStack(null)
+					.commit();
+		});
+
 		// delete button
 		Button deleteButton = view.findViewById(R.id.deleteButton);
 		deleteButton.setOnClickListener(v -> {
