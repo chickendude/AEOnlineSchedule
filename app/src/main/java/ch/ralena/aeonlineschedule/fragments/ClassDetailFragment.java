@@ -37,6 +37,8 @@ public class ClassDetailFragment extends Fragment {
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		getActivity().setTitle("Class Details");
+
 		realm = Realm.getDefaultInstance();
 
 		String classId = getArguments().getString(EXTRA_CLASS_ID, null);

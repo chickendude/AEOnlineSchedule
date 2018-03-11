@@ -30,9 +30,11 @@ public class EditStudentFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		setHasOptionsMenu(true);
-		actionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+		AppCompatActivity activity = (AppCompatActivity) getActivity();
+		actionBar = activity.getSupportActionBar();
 		if (actionBar != null)
 			actionBar.setDisplayHomeAsUpEnabled(true);
+
 		realm = Realm.getDefaultInstance();
 
 		String studentId = getArguments().getString(EXTRA_STUDENT_ID);
@@ -42,6 +44,8 @@ public class EditStudentFragment extends Fragment {
 
 		studentNameEdit = view.findViewById(R.id.studentNameEdit);
 		studentNameEdit.setText(student.getName());
+
+		activity.setTitle("Editing " + student.getName());
 
 		return view;
 	}
