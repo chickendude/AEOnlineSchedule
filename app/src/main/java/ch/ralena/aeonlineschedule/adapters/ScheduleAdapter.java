@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 
 import ch.ralena.aeonlineschedule.R;
+import ch.ralena.aeonlineschedule.objects.ClassType;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
@@ -55,28 +56,31 @@ public class ScheduleAdapter extends AEAdapter<ScheduledClass> {
 				itemView.setOnClickListener(view -> classPublishSubject.onNext(scheduledClass));
 
 				// check if class has started/finished or if it is a future class
-				int classLength = scheduledClass.getClassType().getNumMinutes() * 60 * 1000;
-				long classTime = scheduledClass.getDate().getTime();
-				long curTime = System.currentTimeMillis();
-				// show correct colors depending on the progress of the class (in progress, done, future)
-				if (classTime < curTime && classTime + classLength > curTime) {
-					studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
-					dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
-					dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
-					timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
-					hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
-				} else if (classTime > curTime) {
-					studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
-					dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
-					dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
-					timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
-					hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
-				} else {
-					studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
-					dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
-					dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
-					timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
-					hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+				ClassType classType = scheduledClass.getClassType();
+				if (classType != null) {
+					int classLength = classType.getNumMinutes() * 60 * 1000;
+					long classTime = scheduledClass.getDate().getTime();
+					long curTime = System.currentTimeMillis();
+					// show correct colors depending on the progress of the class (in progress, done, future)
+					if (classTime < curTime && classTime + classLength > curTime) {
+						studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+						dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+						dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+						timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+						hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGreen));
+					} else if (classTime > curTime) {
+						studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+						dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+						dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+						timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorText));
+						hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorAccent));
+					} else {
+						studentNameText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+						dateText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+						dayOfWeekText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+						timeText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+						hoursLeftText.setTextColor(ContextCompat.getColor(view.getContext(), R.color.colorGray));
+					}
 				}
 
 

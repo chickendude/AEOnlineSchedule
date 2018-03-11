@@ -4,6 +4,6 @@
 	<item
 		android:id="@+id/check"
 		android:icon="@drawable/icon_check"
-		android:title="OK"
+		android:title="@string/ok"
 		app:showAsAction="always"/>
 </menu>

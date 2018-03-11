@@ -91,11 +91,16 @@ public class ClassDetailFragment extends Fragment {
 		classNotes.setText(notes);
 		// load class summary
 		String summary = scheduledClass.getSummary() == null || scheduledClass.getSummary().isEmpty() ?
-						"No summary for this class yet." : scheduledClass.getSummary();
+				"No summary for this class yet." : scheduledClass.getSummary();
 		classSummary.setText(summary);
 		// class price and type
 		ClassType cType = scheduledClass.getClassType();
-		String classType = String.format(Locale.US, "%s - $%.2f", cType.getName(), cType.getWage());
+		String classType = "";
+		if (cType != null) {
+			classType = String.format(Locale.US, "%s - $%.2f", cType.getName(), cType.getWage());
+		} else {
+			classType = "None - $00.00";
+		}
 		classTypeAndPrice.setText(classType);
 	}
 }

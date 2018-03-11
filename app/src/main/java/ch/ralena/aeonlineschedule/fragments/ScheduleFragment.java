@@ -45,7 +45,7 @@ public class ScheduleFragment extends Fragment {
 		Realm realm = Realm.getDefaultInstance();
 
 		Date date = new Date(System.currentTimeMillis() - 60 * 60 * 1000);
-		scheduledClasses = realm.where(ScheduledClass.class).greaterThan("date", date).findAllSorted("date");
+		scheduledClasses = realm.where(ScheduledClass.class).greaterThan("date", date).sort("date").findAll();
 
 		// inflate layout
 		View view = inflater.inflate(R.layout.fragment_schedule, container, false);

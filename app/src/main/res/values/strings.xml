@@ -19,4 +19,5 @@
 	<string name="add_new_student">Add New Student</string>
 	<string name="delete_class">Delete Class</string>
 	<string name="past_classes">Past Classes</string>
+	<string name="ok">OK</string>
 </resources>
