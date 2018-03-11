@@ -12,7 +12,11 @@ public class Student extends RealmObject {
 	private String id;
 
 	private String name;
+	private String chineseName;
 	private String notes;
+	private String homeTown;
+	private String currentTown;
+	private ClassType defaultClassType;
 
 	public String getId() {
 		return id;
@@ -32,6 +36,38 @@ public class Student extends RealmObject {
 
 	public void setNotes(String notes) {
 		this.notes = notes;
+	}
+
+	public String getChineseName() {
+		return chineseName;
+	}
+
+	public void setChineseName(String chineseName) {
+		this.chineseName = chineseName;
+	}
+
+	public String getHomeTown() {
+		return homeTown;
+	}
+
+	public void setHomeTown(String homeTown) {
+		this.homeTown = homeTown;
+	}
+
+	public String getCurrentlyTown() {
+		return currentTown;
+	}
+
+	public void setCurrentlyTown(String currentlyTown) {
+		this.currentTown = currentlyTown;
+	}
+
+	public ClassType getDefaultClassType() {
+		return defaultClassType;
+	}
+
+	public void setDefaultClassType(ClassType defaultClassType) {
+		this.defaultClassType = defaultClassType;
 	}
 
 	public boolean deleteStudent(Realm realm) {

@@ -2,16 +2,58 @@
 <android.support.constraint.ConstraintLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
-	<EditText
-		android:id="@+id/studentNameEdit"
+	<LinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
+		android:orientation="vertical"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toTopOf="parent"/>
+		app:layout_constraintTop_toTopOf="parent">
 
+		<EditText
+			android:id="@+id/studentNameEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/english_name"/>
+
+		<EditText
+			android:id="@+id/studentNameChineseEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/chinese_name"/>
+
+		<EditText
+			android:id="@+id/homeTownEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/home_town"/>
+
+		<EditText
+			android:id="@+id/currentTownEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/current_location"/>
+
+		<EditText
+			android:id="@+id/notesEdit"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/notes"/>
+
+		<TextView
+			android:textStyle="italic"
+			android:id="@+id/defaultClassTypeText"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="@color/colorTextLight"
+			android:textSize="18sp"
+			android:padding="4dp"
+			tools:text="General English"/>
+
+	</LinearLayout>
 </android.support.constraint.ConstraintLayout>

@@ -20,4 +20,9 @@
 	<string name="delete_class">Delete Class</string>
 	<string name="past_classes">Past Classes</string>
 	<string name="ok">OK</string>
+	<string name="chinese_name">Chinese Name</string>
+	<string name="english_name">English Name</string>
+	<string name="notes">Notes</string>
+	<string name="home_town">Home Town</string>
+	<string name="current_location">Current Location</string>
 </resources>
