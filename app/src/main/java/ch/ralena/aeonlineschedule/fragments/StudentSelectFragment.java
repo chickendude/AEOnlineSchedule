@@ -1,10 +1,10 @@
 package ch.ralena.aeonlineschedule.fragments;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -35,7 +35,8 @@ public class StudentSelectFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 		realm = Realm.getDefaultInstance();
-		SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+
 
 		students = realm.where(Student.class).findAllSorted("name");
 		View view = inflater.inflate(R.layout.fragment_student_select, container, false);

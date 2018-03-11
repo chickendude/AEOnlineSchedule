@@ -14,15 +14,15 @@
 		<ListPreference
 			android:defaultValue="Default value"
 			android:entries="@array/default_hour"
-			android:entryValues="@array/default_hour"
+			android:entryValues="@array/default_hour_values"
 			android:key="pref_default_hour"
 			android:summary="%s"
 			android:title="Default Class Time"/>
 		<ListPreference
 			android:defaultValue="1"
 			android:entries="@array/default_day"
-			android:entryValues="@array/default_day"
-			android:key="list_preference_1"
+			android:entryValues="@array/default_day_values"
+			android:key="pref_default_day"
 			android:summary="%s"
 			android:title="Default Class Day"/>
 	</PreferenceCategory>

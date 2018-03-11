@@ -2,7 +2,6 @@ package ch.ralena.aeonlineschedule.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.transition.Explode;
 import android.support.transition.Fade;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,7 +74,7 @@ public class NewClassFragment extends Fragment {
 		// set bar title
 		getActivity().setTitle("Add new Class");
 
-		sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+		sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
 
 		// load realm and class type from db
 		realm = Realm.getDefaultInstance();
@@ -277,8 +277,9 @@ public class NewClassFragment extends Fragment {
 			classTimeValue.setText(classTime);
 			sharedPreferences.edit().putLong(KEY_TIME, cal.getTimeInMillis()).apply();
 		});
+
 		// dialog pickers for date and time
-		// date
+		// --date
 		classDateValue = rootView.findViewById(R.id.classDateValue);
 		classDateValue.setOnClickListener(view -> {
 			// date set listener
@@ -287,29 +288,36 @@ public class NewClassFragment extends Fragment {
 				calendar.set(year, month, dayOfMonth);
 				datePublish.onNext(calendar);
 			};
+
 			// date picker
+			int daysAhead = Integer.parseInt(sharedPreferences.getString("pref_default_day", "1"));
 			Calendar c = Calendar.getInstance(TimeZone.getDefault());
 			DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
 					onDateSetListener,
 					c.get(Calendar.YEAR),
 					c.get(Calendar.MONTH),
-					c.get(Calendar.DAY_OF_MONTH) + 1);
+					c.get(Calendar.DAY_OF_MONTH) + daysAhead);
 			datePickerDialog.show();
 		});
 
-		// time
+		// --time
 		classTimeValue = rootView.findViewById(R.id.classTimeValue);
 		classTimeValue.setOnClickListener(view -> {
 			TimePickerDialog.OnTimeSetListener onTimeSetListener = (timePicker, hourOfDay, minute) -> {
 				// if an erroneous time was chosen, just reset it to 0
-				if (minute != 0 && minute != 30) {
-					minute = 0;
-				}
+				minute = 0;
 				calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
 				calendar.set(Calendar.MINUTE, minute);
 				timePublish.onNext(calendar);
 			};
-			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, 22, calendar.get(Calendar.MINUTE), true);
+
+			// load default class time unless a time has already been chosen, then use the chosen time as default
+			int hourOfDay = Integer.parseInt(sharedPreferences.getString("pref_default_hour", "22"));
+			long savedHour = sharedPreferences.getLong(KEY_TIME, -1);
+			if (savedHour != -1) {
+				hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+			}
+			TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), onTimeSetListener, hourOfDay, calendar.get(Calendar.MINUTE), true);
 			timePickerDialog.show();
 		});
 	}
