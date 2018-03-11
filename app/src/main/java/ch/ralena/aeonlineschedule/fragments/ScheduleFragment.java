@@ -32,7 +32,6 @@ import io.realm.Realm;
  */
 public class ScheduleFragment extends Fragment {
 	private static final String TAG = ScheduleFragment.class.getSimpleName();
-	public static final String EXTRA_CLASS_ID = "extra_class_id";
 	List<ScheduledClass> scheduledClasses;
 	ScheduleAdapter adapter;
 	FloatingActionButton fab;
@@ -106,14 +105,13 @@ public class ScheduleFragment extends Fragment {
 		ClassDetailFragment fragment = new ClassDetailFragment();
 
 		Bundle bundle = new Bundle();
-		bundle.putString(EXTRA_CLASS_ID, classId);
+		bundle.putString(ClassDetailFragment.EXTRA_CLASS_ID, classId);
 		fragment.setArguments(bundle);
 
 		getFragmentManager().beginTransaction()
 				.replace(R.id.fragmentContainer, fragment)
 				.addToBackStack(null)
 				.commit();
-
 	}
 
 	/**

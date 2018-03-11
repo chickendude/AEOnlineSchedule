@@ -11,8 +11,16 @@ import java.util.List;
 
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 public class MyClassesAdapter extends AEAdapter<ScheduledClass> {
+
+	PublishSubject<ScheduledClass> classPublishSubject = PublishSubject.create();
+
+	public Observable<ScheduledClass> asObservable() {
+		return classPublishSubject;
+	}
 
 	public MyClassesAdapter(List<ScheduledClass> scheduledClasses) {
 		super(scheduledClasses);
@@ -40,6 +48,7 @@ public class MyClassesAdapter extends AEAdapter<ScheduledClass> {
 
 			@Override
 			void bindView(ScheduledClass scheduledClass) {
+				itemView.setOnClickListener(view -> classPublishSubject.onNext(scheduledClass));
 				int position = objectsList.indexOf(scheduledClass);
 				monthName.setVisibility(View.GONE);
 				if (position == 0) {

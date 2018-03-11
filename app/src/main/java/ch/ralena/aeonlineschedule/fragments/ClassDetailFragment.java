@@ -23,9 +23,8 @@ import ch.ralena.aeonlineschedule.objects.ScheduledClass;
 import io.realm.Realm;
 import io.realm.Sort;
 
-import static ch.ralena.aeonlineschedule.fragments.ScheduleFragment.EXTRA_CLASS_ID;
-
 public class ClassDetailFragment extends Fragment {
+	public static final String EXTRA_CLASS_ID = "extra_class_id";
 	private Realm realm;
 	private ScheduledClass scheduledClass;
 

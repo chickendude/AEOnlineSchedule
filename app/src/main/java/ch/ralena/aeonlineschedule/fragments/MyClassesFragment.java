@@ -35,6 +35,8 @@ public class MyClassesFragment extends Fragment {
 		recyclerView.setAdapter(adapter);
 		recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+		adapter.asObservable().subscribe(this::viewClassDetail);
+
 		return view;
 	}
 	@Override
@@ -42,4 +44,19 @@ public class MyClassesFragment extends Fragment {
 		super.onStart();
 		getActivity().setTitle(String.format("My Classes"));
 	}
+
+	private void viewClassDetail(ScheduledClass scheduledClass) {
+		String classId = scheduledClass.getId();
+		ClassDetailFragment fragment = new ClassDetailFragment();
+
+		Bundle bundle = new Bundle();
+		bundle.putString(ClassDetailFragment.EXTRA_CLASS_ID, classId);
+		fragment.setArguments(bundle);
+
+		getFragmentManager().beginTransaction()
+				.replace(R.id.fragmentContainer, fragment)
+				.addToBackStack(null)
+				.commit();
+	}
+
 }
