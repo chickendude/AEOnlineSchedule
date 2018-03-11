@@ -54,11 +54,11 @@ public class Student extends RealmObject {
 		this.homeTown = homeTown;
 	}
 
-	public String getCurrentlyTown() {
+	public String getCurrentTown() {
 		return currentTown;
 	}
 
-	public void setCurrentlyTown(String currentlyTown) {
+	public void setCurrentTown(String currentlyTown) {
 		this.currentTown = currentlyTown;
 	}
 

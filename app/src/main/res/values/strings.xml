@@ -25,4 +25,6 @@
 	<string name="notes">Notes</string>
 	<string name="home_town">Home Town</string>
 	<string name="current_location">Current Location</string>
+	<string name="default_class_type">Default Class Type:</string>
+	<string name="click_to_select">Click to Select</string>
 </resources>

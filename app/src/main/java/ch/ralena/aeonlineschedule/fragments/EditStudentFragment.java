@@ -22,6 +22,10 @@ public class EditStudentFragment extends Fragment {
 
 	ActionBar actionBar;
 	EditText studentNameEdit;
+	EditText studentNameChineseEdit;
+	EditText homeTownEdit;
+	EditText currentTownEdit;
+	EditText notesEdit;
 
 	Realm realm;
 	Student student;
@@ -42,8 +46,21 @@ public class EditStudentFragment extends Fragment {
 
 		View view = inflater.inflate(R.layout.fragment_edit_student, container, false);
 
+		// set up EditTexts
 		studentNameEdit = view.findViewById(R.id.studentNameEdit);
 		studentNameEdit.setText(student.getName());
+
+		studentNameChineseEdit = view.findViewById(R.id.studentNameChineseEdit);
+		studentNameChineseEdit.setText(student.getChineseName());
+
+		homeTownEdit = view.findViewById(R.id.homeTownEdit);
+		homeTownEdit.setText(student.getHomeTown());
+
+		currentTownEdit = view.findViewById(R.id.currentTownEdit);
+		currentTownEdit.setText(student.getCurrentTown());
+
+		notesEdit = view.findViewById(R.id.notesEdit);
+		notesEdit.setText(student.getNotes());
 
 		activity.setTitle("Editing " + student.getName());
 
@@ -62,7 +79,13 @@ public class EditStudentFragment extends Fragment {
 				getFragmentManager().popBackStackImmediate();
 				break;
 			case R.id.check:
-				realm.executeTransaction(realm -> student.setName(studentNameEdit.getText().toString()));
+				realm.executeTransaction(realm -> {
+					student.setName(studentNameEdit.getText().toString());
+					student.setChineseName(studentNameChineseEdit.getText().toString());
+					student.setHomeTown(homeTownEdit.getText().toString());
+					student.setCurrentTown(currentTownEdit.getText().toString());
+					student.setNotes(notesEdit.getText().toString());
+				});
 				getFragmentManager().popBackStackImmediate();
 				break;
 		}
