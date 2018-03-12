@@ -26,12 +26,14 @@ public class MainApplication extends Application {
 				.build();
 		Realm.setDefaultConfiguration(config);
 
-		// Initialize Stetho
-		Stetho.initialize(
-				Stetho.newInitializerBuilder(this)
-						.enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
-						.enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
-						.build());
+		if (BuildConfig.DEBUG) {
+			// Initialize Stetho
+			Stetho.initialize(
+					Stetho.newInitializerBuilder(this)
+							.enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
+							.enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
+							.build());
+		}
 	}
 
 	public class Migration implements RealmMigration {
@@ -46,7 +48,7 @@ public class MainApplication extends Application {
 			 * + String homeTown
 			 * + String currentTown
 			 * + ClassType defaultClassType
-			* */
+			 * */
 			if (oldVersion == 0) {
 				schema.get("Student")
 						.addField("chineseName", String.class)
