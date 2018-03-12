@@ -32,6 +32,7 @@ import java.util.Map;
 import java.util.TimeZone;
 import java.util.UUID;
 
+import ch.ralena.aeonlineschedule.MainActivity;
 import ch.ralena.aeonlineschedule.R;
 import ch.ralena.aeonlineschedule.objects.ClassType;
 import ch.ralena.aeonlineschedule.objects.ScheduledClass;
@@ -243,6 +244,7 @@ public class NewClassFragment extends Fragment {
 					scheduledClass.setClassType(classType);
 					scheduledClass.setDate(calendar.getTime());
 					scheduledClass.setNotes(notesEdit.getText().toString());
+					((MainActivity)getActivity()).loadAlarms();
 					getActivity().onBackPressed();
 				});
 			}
