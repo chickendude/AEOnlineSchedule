@@ -12,7 +12,7 @@
 			android:summary="%s"
 			android:title="Default Pay Rate"/>
 		<ListPreference
-			android:defaultValue="Default value"
+			android:defaultValue="22"
 			android:entries="@array/default_hour"
 			android:entryValues="@array/default_hour_values"
 			android:key="pref_default_hour"
