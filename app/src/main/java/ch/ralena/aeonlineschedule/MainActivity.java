@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
 		int requestCode = 0;
 		for (ScheduledClass scheduledClass : classes) {
-			Log.d("MainActivity", String.format("%d - %s", requestCode, scheduledClass.getStudent().getName()));
 			Intent intent = new Intent(this, ClassAlarmReceiver.class);
 			intent.putExtra(ClassAlarmReceiver.EXTRA_CLASS_ID, scheduledClass.getId());
 			intent.putExtra(ClassAlarmReceiver.EXTRA_NOTIFICATION_ID, requestCode);

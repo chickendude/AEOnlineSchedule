@@ -7,8 +7,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
 
 import ch.ralena.aeonlineschedule.MainActivity;
 import ch.ralena.aeonlineschedule.R;
@@ -43,8 +41,5 @@ public class ClassAlarmReceiver extends BroadcastReceiver {
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
 
 		notificationManager.notify(notificationId, n);
-
-		Toast.makeText(context, "YAY", Toast.LENGTH_SHORT).show();
-		Log.d(getClass().getSimpleName(), "I ran!");
 	}
 }
